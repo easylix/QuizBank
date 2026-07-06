@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高中数学题库</title>
+  <link rel="stylesheet" href="lib/katex.min.css">
+  <script src="lib/katex.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 顶部导航 -->
+    <header class="header">
+      <div class="header-inner">
+        <button class="menu-btn" id="menuToggle" aria-label="菜单">☰</button>
+        <h1 class="logo">📐 高中数学题库 <span class="ver-badge">v</span></h1>
+        <div class="header-right">
+          <button class="btn btn-sm" id="addFirstBtn" title="添加题目">➕ 加题</button>
+          <span class="stats-badge" id="totalStats">0 题</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <!-- 侧边导航 - 知识点树 -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header" onclick="resetFilter()" style="cursor:pointer;">
+          <h3>📂 高中数学知识点</h3>
+          <button class="btn btn-xs" id="collapseAll" onclick="event.stopPropagation();document.querySelectorAll('.tree-module.open, .tree-chapter.open').forEach(el => { el.classList.remove('open'); el.querySelector('.arrow')?.classList.remove('open'); })">全部折叠</button>
+        </div>
+        <div class="tree-container" id="treeContainer">
+          <!-- 由 JS 动态渲染 -->
+        </div>
+      </aside>
+
+      <!-- 主内容区 -->
+      <main class="main">
+        <!-- 工具栏 -->
+        <div class="toolbar">
+          <div class="toolbar-row">
+            <div class="search-box">
+              <input type="text" id="searchInput" placeholder="搜索题目关键词..." />
+            </div>
+          </div>
+          <div class="toolbar-row filters-row">
+            <select id="filterDifficulty" class="filter-select">
+              <option value="">全部难度</option>
+              <option value="基础">⭐ 基础</option>
+              <option value="中等">⭐⭐ 中等</option>
+              <option value="困难">⭐⭐⭐ 困难</option>
+            </select>
+            <select id="filterType" class="filter-select">
+              <option value="">全部题型</option>
+              <option value="单选题">单选题</option>
+              <option value="多选题">多选题</option>
+              <option value="填空题">填空题</option>
+              <option value="解答题">解答题</option>
+              <option value="证明题">证明题</option>
+            </select>
+            <select id="filterSource" class="filter-select">
+              <option value="">全部来源</option>
+            </select>
+            <span class="result-count" id="resultCount"></span>
+          </div>
+        </div>
+
+        <!-- 题目列表 -->
+        <div class="question-list" id="questionList">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">📝</div>
+            <h3>还没有题目</h3>
+            <p>点击右上角「加题」按钮，或拍照上传图片来添加题目</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 添加/编辑题目弹窗 -->
+  <div class="modal-overlay" id="questionModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">添加题目</h2>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="questionForm">
+          <input type="hidden" id="editId" value="">
+
+          <div class="form-group">
+            <label>知识点 <span class="required">*</span></label>
+            <select id="formTopic" class="form-select" required>
+              <option value="">— 先选模块 —</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>题型 <span class="required">*</span></label>
+            <select id="formType" required>
+              <option value="单选题">单选题</option>
+              <option value="多选题">多选题</option>
+              <option value="填空题">填空题</option>
+              <option value="解答题">解答题</option>
+              <option value="证明题">证明题</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>难度 <span class="required">*</span></label>
+            <select id="formDifficulty" required>
+              <option value="基础">⭐ 基础</option>
+              <option value="中等" selected>⭐⭐ 中等</option>
+              <option value="困难">⭐⭐⭐ 困难</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>题目内容 <span class="required">*</span></label>
+            <textarea id="formContent" rows="4" placeholder="支持 LaTeX 公式，如 $f(x)=x^2$ 或 $$\int_a^b f(x)dx$$" required></textarea>
+          </div>
+
+          <div class="form-group" id="optionsGroup">
+            <label>选项（选择题填写，每行一个选项）</label>
+            <textarea id="formOptions" rows="4" placeholder="A. $x=1$&#10;B. $x=2$&#10;C. $x=3$&#10;D. $x=4$"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>答案 <span class="required">*</span></label>
+            <input type="text" id="formAnswer" placeholder="如：A 或 $x=2$ 或 详细解答" required />
+          </div>
+
+          <div class="form-group">
+            <label>解析（可选）</label>
+            <textarea id="formSolution" rows="4" placeholder="详细解题过程，支持 LaTeX"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>题号（可选，如 1, 2, 3...）</label>
+            <input type="number" id="formNumber" placeholder="如：1" min="1" />
+          </div>
+
+          <div class="form-group">
+            <label>来源（可选）</label>
+            <input type="text" id="formSource" placeholder="如：高考真题/模拟题/教材改编" />
+          </div>
+
+          <div class="form-group">
+            <label>标签（可选，逗号分隔）</label>
+            <input type="text" id="formTags" placeholder="如：易错题,常考题" />
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="modalCancel">取消</button>
+            <button type="submit" class="btn btn-primary">保存题目</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 题目详情弹窗 -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h2>题目详情</h2>
+        <button class="modal-close" id="detailClose">&times;</button>
+      </div>
+      <div class="modal-body" id="detailContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast 容器 -->
+  <div id="toastContainer" style="position:fixed;top:12px;right:12px;z-index:9999;display:flex;flex-direction:column;gap:8px;"></div>
+
+  <script src="lib/auto-render.min.js"></script>
+  <script src="lib/aipexbase.umd.min.js"></script>
+  <script src="app.js?v=32"></script>
+</body>
+</html>

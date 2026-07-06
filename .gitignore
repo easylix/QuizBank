@@ -1,0 +1,17 @@
+# 本地环境
+local.db
+server.js
+project.zip
+*.zip
+*.tgz
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 部署临时文件
+/tmp/math-quiz-deploy/
+
+# 系统文件
+.DS_Store
+Thumbs.db
