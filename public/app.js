@@ -6,7 +6,7 @@ const BAAS_CONFIG = {
   apiKey: 'baas_ZiRfZlhr'
 };
 
-const APP_VERSION = 'v23b';
+const APP_VERSION = 'v24';
 
 let client = null;
 let questions = [];
@@ -213,18 +213,18 @@ function renderTree() {
   tree.modules.forEach(mod => {
     var modSelected = currentTopicId === mod.id || mod.chapters.some(function(ch) { return ch.id === currentTopicId || ch.topics.some(function(t) { return t.id === currentTopicId; }); });
     html += '<div class="tree-module open" data-id="' + mod.id + '">';
-    html += '  <div class="tree-module-header' + (modSelected ? ' selected' : '') + '">';
+    html += '  <div class="tree-module-header' + (modSelected ? ' selected' : '') + '" onclick="selectModule(\'' + mod.id + '\')">';
     html += '    <span class="arrow open" onclick="event.stopPropagation();toggleModule(\'' + mod.id + '\')">▶</span>';
-    html += '    <span class="tree-label" onclick="selectModule(\'' + mod.id + '\')">' + mod.name + '</span>';
+    html += '    <span class="tree-label">' + mod.name + '</span>';
     html += '    <span class="count">(' + qCount(mod.id) + ')</span>';
     html += '  </div>';
     html += '  <div class="tree-chapter">';
     mod.chapters.forEach(function(ch) {
       var chSelected = currentTopicId === ch.id || ch.topics.some(function(t) { return t.id === currentTopicId; });
       html += '  <div class="tree-chapter open" data-id="' + ch.id + '">';
-      html += '    <div class="tree-chapter-header' + (chSelected ? ' selected' : '') + '">';
+      html += '    <div class="tree-chapter-header' + (chSelected ? ' selected' : '') + '" onclick="selectChapter(\'' + ch.id + '\')">';
       html += '      <span class="arrow open" onclick="event.stopPropagation();toggleChapter(\'' + ch.id + '\')">▶</span>';
-      html += '      <span class="tree-label" onclick="selectChapter(\'' + ch.id + '\')">' + ch.name + '</span>';
+      html += '      <span class="tree-label">' + ch.name + '</span>';
       html += '      <span class="count">(' + qCount(ch.id) + ')</span>';
       html += '    </div>';
       html += '    <div class="tree-topics">';
