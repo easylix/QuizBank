@@ -1,10 +1,14 @@
 /* ===== 高中数学题库 - 应用逻辑 (云端版) ===== */
 
 // ---- 云端数据库配置 ----
+const BAAS_CONFIG = {
+  baseUrl: 'https://baas.kuafuai.net/baas-api',
+  apiKey: 'baas_ZiRfZlhr'
+};
+
 const APP_VERSION = 'v24';
 
-const API_BASE = '/api';
-
+let client = null;
 let questions = [];
 let currentTopicId = null;
 let showAnswerCache = {};
@@ -12,37 +16,24 @@ let currentPage = 1;
 let pageSize = 30;
 let showAllAnswers = false;
 
-// ---- 本地API Helper ----
-async function apiQuery(params = {}) {
-  const searchParams = new URLSearchParams();
-  if (params.limit) searchParams.set('limit', params.limit);
-  if (params.offset) searchParams.set('offset', params.offset);
-  const url = API_BASE + '/query' + (searchParams.toString() ? '?' + searchParams.toString() : '');
-  const res = await fetch(url);
-  return res.json();
-}
-
-async function apiPost(path, data) {
-  const res = await fetch(API_BASE + path, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(data)
-  });
-  return res.json();
-}
-
 // ---- 初始化 ----
 (async function init() {
-  // 1. 加载知识点树
+  // 1. 初始化云端数据库客户端
+  client = aipexbase.createClient({
+    baseUrl: BAAS_CONFIG.baseUrl,
+    apiKey: BAAS_CONFIG.apiKey
+  });
+
+  // 2. 加载知识点树
   const res = await fetch('data/knowledge-tree.json');
   window.KNOWLEDGE_TREE = await res.json();
   renderTree();
 
-  // 2. 显示版本号
+  // 3. 从云端加载题目
+  // 显示版本号
   const verEl = document.querySelector('.ver-badge');
   if (verEl) verEl.textContent = APP_VERSION;
 
-  // 3. 从本地API加载题目
   await loadQuestionsFromCloud();
   renderList();
 
@@ -62,9 +53,8 @@ function fixLatexUnderscore(str) {
 
 async function loadQuestionsFromCloud() {
   try {
-    const res = await apiQuery({limit: 1000});
+    const res = await client.db.from('questions_v2').list().order('createdAt', 'desc');
     if (res.success && res.data) {
-      // Also load detail for each question to get images when viewing list (lazy)
       const seen = new Set();
       questions = (res.data || []).filter(q => {
         const key = (q.content || '').replace(/\s+/g, '');
@@ -72,23 +62,28 @@ async function loadQuestionsFromCloud() {
         seen.add(key);
         return true;
       }).map(q => {
+        // 从 tags 字段解析题号 (number:XX) 和图片 (image:path)
         let num = '';
+        let img = '';
         if (q.tags) {
           const nm = q.tags.match(/number:(\d+)/);
           if (nm) num = nm[1];
+          const im = q.tags.match(/image:([^,]+)/);
+          if (im) img = im[1];
         }
         return {
           id: q.id,
           topicId: q.topicId || '',
           type: q.type || '单选题',
           difficulty: q.difficulty || '中等',
-          content: fixLatexUnderscore(compressNewlines(q.content || '')),
-          options: compressNewlines(q.options || ''),
-          answer: compressNewlines(q.answer || ''),
-          solution: fixLatexUnderscore(compressNewlines(q.solution || '')),
+          content: fixLatexUnderscore(q.content || ''),
+          options: q.options || '',
+          answer: q.answer || '',
+          solution: fixLatexUnderscore(q.solution || ''),
           source: q.source || '',
           tags: q.tags || '',
-          image: q.image || '',
+          // 优先使用数据库中的 image/answerImage 字段，回退到 tags 中的旧引用
+          image: q.image || img,
           answerImage: q.answerImage || '',
           number: num,
           createdAt: q.createdAt ? new Date(q.createdAt).getTime() : Date.now()
@@ -98,7 +93,7 @@ async function loadQuestionsFromCloud() {
       questions = [];
     }
   } catch (e) {
-    console.error('加载本地数据失败:', e);
+    console.error('加载云端数据失败:', e);
     questions = [];
     showToast('加载题库失败，请刷新重试', 'error');
   }
@@ -107,34 +102,44 @@ async function loadQuestionsFromCloud() {
 }
 
 async function saveNumberToTag(id, number) {
-  // Number is stored directly in the tags field, handled in saveUpdateQuestion
+  try {
+    const listRes = await client.db.from('questions_v2').list().eq('id', id);
+    if (!listRes.success || !listRes.data || listRes.data.length === 0) return;
+    const q = listRes.data[0];
+    let newTags = (q.tags || '').replace(/,?number:\d+/g, '');
+    if (number) {
+      newTags = newTags ? newTags + ',number:' + number : 'number:' + number;
+    }
+    await client.db.from('questions_v2').update().set({tags: newTags}).eq('id', id);
+  } catch(e) {
+    console.error('题号保存失败:', e);
+  }
 }
 
 async function removeNumberFromTag(id) {
-  // Number removal is handled in saveUpdateQuestion
+  await saveNumberToTag(id, '');
 }
 
 async function saveAddQuestion(data) {
   try {
-    const tags = data.tags || '';
-    const fullTags = data.number ? (tags ? tags + ',number:' + data.number : 'number:' + data.number) : tags;
-    const res = await apiPost('/query', {
-      table: 'questions',
-      method: 'add',
-      tableData: {
-        content: data.content,
-        options: data.options || '',
-        answer: data.answer,
-        solution: data.solution || '',
-        type: data.type,
-        difficulty: data.difficulty,
-        source: data.source || '',
-        topicId: data.topicId,
-        tags: fullTags
-      }
+    const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const res = await client.db.from('questions_v2').insert().values({
+      topicId: data.topicId,
+      type: data.type,
+      difficulty: data.difficulty,
+      content: data.content,
+      options: data.options || '',
+      answer: data.answer,
+      solution: data.solution || '',
+      source: data.source || '',
+      tags: data.tags || '',
+      createdAt: now
     });
     if (res.success) {
       await loadQuestionsFromCloud();
+      if (data.number && res.data && res.data.id) {
+        await saveNumberToTag(res.data.id, data.number);
+      }
       renderList();
       renderTree();
       return true;
@@ -150,25 +155,19 @@ async function saveAddQuestion(data) {
 
 async function saveUpdateQuestion(id, data) {
   try {
-    const tags = data.tags || '';
-    const fullTags = data.number ? (tags ? tags + ',number:' + data.number : 'number:' + data.number) : tags;
-    const res = await apiPost('/query', {
-      table: 'questions',
-      method: 'update',
-      tableData: {
-        id: id,
-        content: data.content,
-        options: data.options || '',
-        answer: data.answer,
-        solution: data.solution || '',
-        type: data.type,
-        difficulty: data.difficulty,
-        source: data.source || '',
-        topicId: data.topicId,
-        tags: fullTags
-      }
-    });
+    const res = await client.db.from('questions_v2').update().set({
+      topicId: data.topicId,
+      type: data.type,
+      difficulty: data.difficulty,
+      content: data.content,
+      options: data.options || '',
+      answer: data.answer,
+      solution: data.solution || '',
+      source: data.source || '',
+      tags: data.tags || '',
+    }).eq('id', id);
     if (res.success) {
+      await saveNumberToTag(id, data.number || '');
       await loadQuestionsFromCloud();
       renderList();
       renderTree();
@@ -185,12 +184,9 @@ async function saveUpdateQuestion(id, data) {
 
 async function saveDeleteQuestion(id) {
   try {
-    const res = await apiPost('/query', {
-      table: 'questions',
-      method: 'delete',
-      tableData: {id: id}
-    });
+    const res = await client.db.from('questions_v2').delete().eq('id', id);
     if (res.success) {
+      await removeNumberFromTag(id);
       await loadQuestionsFromCloud();
       renderList();
       renderTree();
@@ -316,23 +312,20 @@ function getChapterNames(id) {
   const ids = (id || '').split(',').filter(Boolean);
   const chapters = [];
   const topics = [];
-  const modNames = [];
   for (const mod of KNOWLEDGE_TREE.modules) {
     for (const ch of mod.chapters) {
       if (ids.includes(ch.id)) {
         chapters.push(ch.name);
-        if (!modNames.includes(mod.name)) modNames.push(mod.name);
       }
       for (const t of ch.topics) {
         if (ids.includes(t.id)) {
           topics.push(t.name);
           if (!chapters.includes(ch.name)) chapters.push(ch.name);
-          if (!modNames.includes(mod.name)) modNames.push(mod.name);
         }
       }
     }
   }
-  return { module: modNames.join('、') || '', chapter: chapters.join('、') || '', topic: topics.join('、') };
+  return { module: '', chapter: chapters.join('、') || '', topic: topics.join('、') };
 }
 
 // ---- 渲染题目列表 ----
@@ -435,7 +428,7 @@ function renderList() {
 
     html += `<div class="q-card" onclick="showDetail('${q.id}')">
       <div class="q-card-header">
-        <span class="q-badge q-badge-topic">${info.module} ${info.chapter}</span>
+        <span class="q-badge q-badge-topic">${info.chapter}</span>
         <span class="q-badge q-badge-type">${q.type}</span>
         <span class="q-badge ${diffClass}">${q.difficulty}</span>
         ${q.source ? `<span class="q-badge q-badge-source">📖 ${q.source}</span>` : ''}
@@ -551,53 +544,9 @@ function getFilteredQuestions() {
 
 
 // ---- 详情弹窗 ----
-// ---- 压缩多余空行 ----
-function compressNewlines(str) {
-  if (!str) return '';
-  // 将连续2个及以上的换行压缩为单个换行（题库文本不应有空行分隔）
-  return str.replace(/\n{2,}/g, '\n');
-}
-
 function showDetail(id) {
-  // 从API获取完整数据（含图片字段）
-  fetch('/api/detail', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({id: id})
-  }).then(function(r){return r.json();}).then(function(res){
-    var qOrig = res.success ? res.data : null;
-    if (!qOrig) {
-      // 回退到本地数据
-      var qFallback = questions.find(function(x){return x.id == id;});
-      if (!qFallback) return;
-      renderDetailView(qFallback);
-      return;
-    }
-    var q = {
-      id: qOrig.id,
-      topicId: qOrig.topicId || '',
-      type: qOrig.type || '单选题',
-      difficulty: qOrig.difficulty || '中等',
-      content: fixLatexUnderscore(compressNewlines(qOrig.content || '')),
-      options: compressNewlines(qOrig.options || ''),
-      answer: compressNewlines(qOrig.answer || ''),
-      solution: fixLatexUnderscore(compressNewlines(qOrig.solution || '')),
-      source: qOrig.source || '',
-      tags: qOrig.tags || '',
-      image: qOrig.image || '',
-      answerImage: qOrig.answerImage || '',
-      number: (qOrig.tags || '').match(/number:(\d+)/)?.[1] || ''
-    };
-    renderDetailView(q);
-  }).catch(function(e){
-    console.error('获取详情失败，使用本地数据:', e);
-    var qFallback = questions.find(function(x){return x.id == id;});
-    if (!qFallback) return;
-    renderDetailView(qFallback);
-  });
-}
-
-function renderDetailView(q) {
+  const q = questions.find(x => x.id == id);
+  if (!q) return;
   const info = getChapterNames(q.topicId);
   const diffClass = q.difficulty === '基础' ? 'q-badge-difficulty-easy' : q.difficulty === '中等' ? 'q-badge-difficulty-mid' : 'q-badge-difficulty-hard';
   let optionsHtml = '';
@@ -617,7 +566,7 @@ function renderDetailView(q) {
     <div class="detail-section">
       <h4>题目信息</h4>
       <div class="detail-body">
-        <span class="q-badge q-badge-topic">${info.module} ${info.chapter}</span>
+        <span class="q-badge q-badge-topic">${info.module} / ${info.chapter}</span>
         <span class="q-badge q-badge-type">${q.type}</span>
         <span class="q-badge ${diffClass}">${q.difficulty}</span>
         ${q.source ? `<span class="q-badge q-badge-topic" style="background:#fef3c7;color:#b45309;">📖 ${q.source}</span>` : ''}

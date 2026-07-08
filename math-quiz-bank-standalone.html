@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>高中数学题库</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <style>
+/* ===== 全局 ===== */
+:root {
+  --primary: #4f46e5;
+  --primary-light: #eef2ff;
+  --primary-hover: #4338ca;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== Header ===== */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo { font-size: 1.15rem; font-weight: 700; flex: 1; }
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  color: var(--text);
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.stats-badge {
+  font-size: .8rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ===== Layout ===== */
+.layout {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: calc(100vh - 60px);
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  background: var(--card-bg);
+  overflow-y: auto;
+  height: calc(100vh - 60px);
+  position: sticky;
+  top: 60px;
+  transition: transform .25s ease;
+}
+.sidebar-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-header h3 { font-size: .9rem; }
+
+/* Tree */
+.tree-container { padding: 8px 0; }
+.tree-module { }
+.tree-module-header {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: .88rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .15s;
+}
+.tree-module-header:hover { background: var(--primary-light); }
+.tree-module-header .arrow {
+  transition: transform .2s;
+  font-size: .7rem;
+  width: 16px;
+}
+.tree-module-header .arrow.open { transform: rotate(90deg); }
+
+.tree-chapter { padding-left: 8px; display: none; }
+.tree-module.open > .tree-chapter { display: block; }
+.tree-chapter-header {
+  padding: 6px 16px 6px 24px;
+  cursor: pointer;
+  font-size: .82rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .15s;
+  color: var(--text-muted);
+}
+.tree-chapter-header:hover {
+  background: var(--primary-light);
+  color: var(--text);
+}
+.tree-chapter-header .arrow { transition: transform .2s; font-size: .6rem; width: 12px; }
+.tree-chapter-header .arrow.open { transform: rotate(90deg); }
+.tree-topics { padding-left: 0; display: none; }
+.tree-chapter.open > .tree-topics { display: block; }
+
+.tree-topic {
+  padding: 5px 16px 5px 36px;
+  font-size: .8rem;
+  cursor: pointer;
+  border-radius: 0 20px 20px 0;
+  transition: all .15s;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tree-topic:hover { background: var(--primary-light); color: var(--text); }
+.tree-topic.active {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 500;
+}
+.tree-topic .count {
+  margin-left: auto;
+  font-size: .7rem;
+  opacity: .7;
+  background: rgba(255,255,255,.2);
+  padding: 0 6px;
+  border-radius: 8px;
+}
+
+/* ===== Main ===== */
+.main {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* ===== Toolbar ===== */
+.toolbar {
+  margin-bottom: 16px;
+}
+.toolbar-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.toolbar-row + .toolbar-row { margin-top: 8px; }
+.search-box {
+  flex: 1;
+  min-width: 200px;
+}
+.search-box input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: .9rem;
+  outline: none;
+  transition: border .2s;
+}
+.search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: .85rem;
+  background: var(--card-bg);
+  cursor: pointer;
+  min-width: 100px;
+}
+.result-count {
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+/* ===== Question List ===== */
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+.empty-icon { font-size: 3rem; margin-bottom: 12px; }
+.empty-state h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--text); }
+.empty-state p { font-size: .9rem; }
+
+/* Question Card */
+.q-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.q-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  border-color: var(--primary);
+}
+.q-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.q-badge {
+  display: inline-block;
+  font-size: .72rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+.q-badge-topic {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.q-badge-type {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+.q-badge-difficulty-easy { background: #dcfce7; color: #16a34a; }
+.q-badge-difficulty-mid  { background: #fef9c3; color: #ca8a04; }
+.q-badge-difficulty-hard { background: #fee2e2; color: #dc2626; }
+
+.q-card-content {
+  font-size: .93rem;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.q-card-answer {
+  font-size: .82rem;
+  color: var(--success);
+  font-weight: 500;
+}
+.q-card-answer .hidden-answer {
+  color: var(--primary);
+  cursor: pointer;
+}
+.q-card-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.q-card-footer button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: .8rem;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all .15s;
+}
+.q-card-footer button:hover { background: var(--primary-light); color: var(--primary); }
+.q-card-footer .btn-del:hover { background: #fee2e2; color: var(--danger); }
+
+/* ===== Modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 700px;
+  margin-top: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: modalIn .2s ease;
+}
+.modal-lg { max-width: 800px; }
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-header h2 { font-size: 1.05rem; }
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 4px;
+  color: var(--text-muted);
+}
+.modal-body { padding: 20px; }
+
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.form-group .required { color: var(--danger); }
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: .9rem;
+  outline: none;
+  transition: border .2s;
+  font-family: inherit;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+}
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: .88rem;
+  font-weight: 500;
+  transition: all .15s;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: #f1f5f9; color: var(--text); }
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-sm { padding: 6px 14px; font-size: .82rem; }
+.btn-xs { padding: 4px 10px; font-size: .75rem; background: none; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; }
+.btn-xs:hover { background: var(--primary-light); }
+
+/* ===== Detail ===== */
+.detail-section { margin-bottom: 16px; }
+.detail-section h4 {
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.detail-section .detail-body {
+  font-size: .95rem;
+  line-height: 1.8;
+}
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.detail-tags .tag {
+  font-size: .78rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+.detail-options {
+  list-style: none;
+  padding: 0;
+}
+.detail-options li {
+  padding: 6px 0;
+  font-size: .92rem;
+}
+.detail-options li.correct { color: var(--success); font-weight: 600; }
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .menu-btn { display: block; }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 60px;
+    height: calc(100vh - 60px);
+    z-index: 50;
+    transform: translateX(-100%);
+    width: 280px;
+    box-shadow: 4px 0 20px rgba(0,0,0,.15);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main { padding: 12px; }
+  .toolbar-row { flex-direction: column; }
+  .filter-select { width: 100%; min-width: unset; }
+  .modal-overlay { padding: 10px; align-items: flex-start; }
+  .modal { margin-top: 10px; }
+}
+
+/* ===== KaTeX fix ===== */
+.katex { font-size: 1.05em !important; }
+.katex-display { margin: .5em 0 !important; overflow-x: auto; overflow-y: hidden; }
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="header-inner">
+        <button class="menu-btn" id="menuToggle" aria-label="菜单">☰</button>
+        <h1 class="logo">📐 高中数学题库</h1>
+        <div class="header-right">
+          <button class="btn btn-sm" id="addFirstBtn" title="添加题目">➕ 加题</button>
+          <span class="stats-badge" id="totalStats">0 题</span>
+        </div>
+      </div>
+    </header>
+    <div class="layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h3>📂 知识点目录</h3>
+          <button class="btn btn-xs" id="collapseAll">全部折叠</button>
+        </div>
+        <div class="tree-container" id="treeContainer"></div>
+      </aside>
+      <main class="main">
+        <div class="toolbar">
+          <div class="toolbar-row">
+            <div class="search-box">
+              <input type="text" id="searchInput" placeholder="搜索题目关键词..." />
+            </div>
+          </div>
+          <div class="toolbar-row filters-row">
+            <select id="filterDifficulty" class="filter-select">
+              <option value="">全部难度</option>
+              <option value="基础">⭐ 基础</option>
+              <option value="中等">⭐⭐ 中等</option>
+              <option value="困难">⭐⭐⭐ 困难</option>
+            </select>
+            <select id="filterType" class="filter-select">
+              <option value="">全部题型</option>
+              <option value="单选题">单选题</option>
+              <option value="多选题">多选题</option>
+              <option value="填空题">填空题</option>
+              <option value="解答题">解答题</option>
+              <option value="证明题">证明题</option>
+            </select>
+            <span class="result-count" id="resultCount"></span>
+          </div>
+        </div>
+        <div class="question-list" id="questionList">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">📝</div>
+            <h3>还没有题目</h3>
+            <p>点击右上角「加题」按钮，或点击「🌱 种子题库」一键导入</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="questionModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">添加题目</h2>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="questionForm">
+          <input type="hidden" id="editId" value="">
+          <div class="form-group">
+            <label>知识点 <span class="required">*</span></label>
+            <select id="formTopic" class="form-select" required>
+              <option value="">— 先选模块 —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>题型 <span class="required">*</span></label>
+            <select id="formType" required>
+              <option value="单选题">单选题</option>
+              <option value="多选题">多选题</option>
+              <option value="填空题">填空题</option>
+              <option value="解答题">解答题</option>
+              <option value="证明题">证明题</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>难度 <span class="required">*</span></label>
+            <select id="formDifficulty" required>
+              <option value="基础">⭐ 基础</option>
+              <option value="中等" selected>⭐⭐ 中等</option>
+              <option value="困难">⭐⭐⭐ 困难</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>题目内容 <span class="required">*</span></label>
+            <textarea id="formContent" rows="4" placeholder="支持 LaTeX 公式，如 $f(x)=x^2$ 或 $$\int_a^b f(x)dx$$" required></textarea>
+          </div>
+          <div class="form-group" id="optionsGroup">
+            <label>选项（选择题填写，每行一个选项）</label>
+            <textarea id="formOptions" rows="4" placeholder="A. $x=1$&#10;B. $x=2$&#10;C. $x=3$&#10;D. $x=4$"></textarea>
+          </div>
+          <div class="form-group">
+            <label>答案 <span class="required">*</span></label>
+            <input type="text" id="formAnswer" placeholder="如：A 或 $x=2$ 或 详细解答" required />
+          </div>
+          <div class="form-group">
+            <label>解析（可选）</label>
+            <textarea id="formSolution" rows="4" placeholder="详细解题过程，支持 LaTeX"></textarea>
+          </div>
+          <div class="form-group">
+            <label>来源（可选）</label>
+            <input type="text" id="formSource" placeholder="如：高考真题/模拟题/教材改编" />
+          </div>
+          <div class="form-group">
+            <label>标签（可选，逗号分隔）</label>
+            <input type="text" id="formTags" placeholder="如：易错题,常考题" />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="modalCancel">取消</button>
+            <button type="submit" class="btn btn-primary">保存题目</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h2>题目详情</h2>
+        <button class="modal-close" id="detailClose">&times;</button>
+      </div>
+      <div class="modal-body" id="detailContent"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <script>
+/* ===== 高中数学题库 - 应用逻辑 ===== */
+
+// ---- 数据 ----
+const DB_KEY = 'math_quiz_bank_v1';
+
+const tree = null; // loaded from knowledge-tree.json via fetch
+
+let questions = [];
+let currentTopicId = null; // filter
+let showAnswerCache = {}; // qid -> bool
+
+// ---- 初始化 ----
+(function init() {
+  // 知识点树（内嵌）
+  window.KNOWLEDGE_TREE = {"version": "1.0", "textbook": "人教版高中数学", "modules": [{"id": "M1", "name": "必修一", "grade": "高一上", "chapters": [{"id": "M1-C1", "name": "集合与常用逻辑用语", "topics": [{"id": "M1-C1-T1", "name": "集合的概念与表示"}, {"id": "M1-C1-T2", "name": "集合间的基本关系（子集、真子集）"}, {"id": "M1-C1-T3", "name": "集合的基本运算（交、并、补）"}, {"id": "M1-C1-T4", "name": "命题与充要条件"}, {"id": "M1-C1-T5", "name": "全称量词与存在量词"}]}, {"id": "M1-C2", "name": "一元二次函数、方程与不等式", "topics": [{"id": "M1-C2-T1", "name": "不等式的性质"}, {"id": "M1-C2-T2", "name": "基本不等式（均值不等式）"}, {"id": "M1-C2-T3", "name": "二次函数与一元二次方程、不等式"}]}, {"id": "M1-C3", "name": "函数的概念与性质", "topics": [{"id": "M1-C3-T1", "name": "函数的概念及其表示"}, {"id": "M1-C3-T2", "name": "函数的单调性与最值"}, {"id": "M1-C3-T3", "name": "函数的奇偶性"}, {"id": "M1-C3-T4", "name": "幂函数"}, {"id": "M1-C3-T5", "name": "函数的综合应用"}]}, {"id": "M1-C4", "name": "指数函数与对数函数", "topics": [{"id": "M1-C4-T1", "name": "指数运算与指数函数"}, {"id": "M1-C4-T2", "name": "对数运算与对数函数"}, {"id": "M1-C4-T3", "name": "函数的零点与二分法"}, {"id": "M1-C4-T4", "name": "函数模型及其应用"}]}, {"id": "M1-C5", "name": "三角函数", "topics": [{"id": "M1-C5-T1", "name": "任意角与弧度制"}, {"id": "M1-C5-T2", "name": "三角函数的概念"}, {"id": "M1-C5-T3", "name": "同角三角函数基本关系与诱导公式"}, {"id": "M1-C5-T4", "name": "三角函数的图像与性质"}, {"id": "M1-C5-T5", "name": "函数 y=Asin(ωx+φ) 的图像"}, {"id": "M1-C5-T6", "name": "三角恒等变换（和差角、倍角公式）"}]}]}, {"id": "M2", "name": "必修二", "grade": "高一下", "chapters": [{"id": "M2-C1", "name": "平面向量及其应用", "topics": [{"id": "M2-C1-T1", "name": "平面向量的概念与线性运算"}, {"id": "M2-C1-T2", "name": "平面向量的数量积"}, {"id": "M2-C1-T3", "name": "平面向量基本定理与坐标表示"}, {"id": "M2-C1-T4", "name": "平面向量的应用（几何、物理）"}]}, {"id": "M2-C2", "name": "复数", "topics": [{"id": "M2-C2-T1", "name": "复数的概念与几何意义"}, {"id": "M2-C2-T2", "name": "复数的四则运算"}]}, {"id": "M2-C3", "name": "立体几何初步", "topics": [{"id": "M2-C3-T1", "name": "基本立体图形与直观图"}, {"id": "M2-C3-T2", "name": "空间点、直线、平面的位置关系"}, {"id": "M2-C3-T3", "name": "直线、平面的平行判定与性质"}, {"id": "M2-C3-T4", "name": "直线、平面的垂直判定与性质"}, {"id": "M2-C3-T5", "name": "简单几何体的表面积与体积"}]}, {"id": "M2-C4", "name": "统计", "topics": [{"id": "M2-C4-T1", "name": "随机抽样"}, {"id": "M2-C4-T2", "name": "用样本估计总体"}]}, {"id": "M2-C5", "name": "概率", "topics": [{"id": "M2-C5-T1", "name": "随机事件与概率"}, {"id": "M2-C5-T2", "name": "事件的相互独立性"}, {"id": "M2-C5-T3", "name": "频率与概率"}]}]}, {"id": "M3", "name": "选择性必修一", "grade": "高二上", "chapters": [{"id": "M3-C1", "name": "空间向量与立体几何", "topics": [{"id": "M3-C1-T1", "name": "空间向量及其运算"}, {"id": "M3-C1-T2", "name": "空间向量基本定理"}, {"id": "M3-C1-T3", "name": "空间向量运算的坐标表示"}, {"id": "M3-C1-T4", "name": "用空间向量研究位置关系"}, {"id": "M3-C1-T5", "name": "用空间向量研究距离与夹角"}]}, {"id": "M3-C2", "name": "直线与圆的方程", "topics": [{"id": "M3-C2-T1", "name": "直线的倾斜角、斜率与方程"}, {"id": "M3-C2-T2", "name": "两条直线的位置关系与距离公式"}, {"id": "M3-C2-T3", "name": "圆的方程"}, {"id": "M3-C2-T4", "name": "直线与圆、圆与圆的位置关系"}]}, {"id": "M3-C3", "name": "圆锥曲线", "topics": [{"id": "M3-C3-T1", "name": "椭圆"}, {"id": "M3-C3-T2", "name": "双曲线"}, {"id": "M3-C3-T3", "name": "抛物线"}]}]}, {"id": "M4", "name": "选择性必修二", "grade": "高二下", "chapters": [{"id": "M4-C1", "name": "数列", "topics": [{"id": "M4-C1-T1", "name": "数列的概念与表示"}, {"id": "M4-C1-T2", "name": "等差数列"}, {"id": "M4-C1-T3", "name": "等比数列"}, {"id": "M4-C1-T4", "name": "数列的综合应用（求和、递推）"}]}, {"id": "M4-C2", "name": "导数及其应用", "topics": [{"id": "M4-C2-T1", "name": "导数的概念与几何意义"}, {"id": "M4-C2-T2", "name": "导数的运算"}, {"id": "M4-C2-T3", "name": "导数与函数的单调性"}, {"id": "M4-C2-T4", "name": "导数与函数的极值、最值"}, {"id": "M4-C2-T5", "name": "导数的综合应用（恒成立、零点）"}]}]}, {"id": "M5", "name": "选择性必修三", "grade": "高三/高二下", "chapters": [{"id": "M5-C1", "name": "计数原理", "topics": [{"id": "M5-C1-T1", "name": "分类加法与分步乘法计数原理"}, {"id": "M5-C1-T2", "name": "排列与组合"}, {"id": "M5-C1-T3", "name": "二项式定理"}]}, {"id": "M5-C2", "name": "随机变量及其分布", "topics": [{"id": "M5-C2-T1", "name": "条件概率与全概率公式"}, {"id": "M5-C2-T2", "name": "离散型随机变量的分布列与数字特征"}, {"id": "M5-C2-T3", "name": "二项分布与超几何分布"}, {"id": "M5-C2-T4", "name": "正态分布"}]}, {"id": "M5-C3", "name": "成对数据的统计分析", "topics": [{"id": "M5-C3-T1", "name": "成对数据的相关关系与回归分析"}, {"id": "M5-C3-T2", "name": "列联表与独立性检验"}]}]}]};
+  // 种子题库（内嵌）
+  window.SEED_QUESTIONS = [{"id": "q_seed_001", "topicId": "M1-C1-T1", "type": "单选题", "difficulty": "基础", "content": "设集合 $A=\\{x \\in \\mathbb{Z} \\mid -1 < x \\leq 3\\}$，则集合 $A$ 的元素个数为（ ）", "options": "A. 3\nB. 4\nC. 5\nD. 6", "answer": "B", "solution": "由 $-1 < x \\leq 3$ 且 $x \\in \\mathbb{Z}$，得 $x = 0, 1, 2, 3$，共4个元素，故选B。", "source": "教材改编", "tags": "集合,元素互异性", "createdAt": 1748388480000}, {"id": "q_seed_002", "topicId": "M1-C1-T3", "type": "单选题", "difficulty": "基础", "content": "已知全集 $U = \\{1, 2, 3, 4, 5\\}$，集合 $A = \\{1, 3\\}$，则 $\\complement_U A =$（ ）", "options": "A. $\\{2, 4, 5\\}$\nB. $\\{1, 3\\}$\nC. $\\{2, 4\\}$\nD. $\\{1, 2, 3, 4, 5\\}$", "answer": "A", "solution": "补集是指在全集 $U$ 中但不在 $A$ 中的元素，$U$ 中去掉 $1,3$ 得 $\\{2,4,5\\}$，故选A。", "source": "教材改编", "tags": "补集,集合运算", "createdAt": 1748388480001}, {"id": "q_seed_003", "topicId": "M1-C1-T2", "type": "单选题", "difficulty": "中等", "content": "已知集合 $A = \\{x \\mid x^2 - 3x + 2 = 0\\}$，$B = \\{x \\mid 0 < x < 5, x \\in \\mathbb{N}\\}$，则满足 $A \\subseteq C \\subseteq B$ 的集合 $C$ 的个数为（ ）", "options": "A. 1\nB. 2\nC. 4\nD. 8", "answer": "C", "solution": "由 $A = \\{1, 2\\}$，$B = \\{1, 2, 3, 4\\}$。$C$ 必须包含 $\\{1,2\\}$，且是 $B$ 的子集，所以 $C$ 从 $\\{3,4\\}$ 中任选子集加入即可。$\\{3,4\\}$ 有 $2^2=4$ 个子集，故有4个满足条件的 $C$。", "source": "经典例题改编", "tags": "子集,包含关系,计数", "createdAt": 1748388480002}, {"id": "q_seed_004", "topicId": "M1-C2-T2", "type": "填空题", "difficulty": "基础", "content": "已知 $x > 0$，则 $x + \\dfrac{4}{x}$ 的最小值为\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$4$", "solution": "由基本不等式 $x + \\dfrac{4}{x} \\geq 2 \\sqrt{x \\cdot \\dfrac{4}{x}} = 4$，当且仅当 $x = \\dfrac{4}{x}$ 即 $x=2$ 时取等号。", "source": "教材改编", "tags": "基本不等式,均值不等式", "createdAt": 1748388480003}, {"id": "q_seed_005", "topicId": "M1-C3-T2", "type": "解答题", "difficulty": "中等", "content": "证明函数 $f(x) = \\dfrac{1}{x}$ 在 $(0, +\\infty)$ 上单调递减。", "options": "", "answer": "证明", "solution": "任取 $x_1, x_2 \\in (0, +\\infty)$ 且 $x_1 < x_2$，则\n$f(x_2) - f(x_1) = \\dfrac{1}{x_2} - \\dfrac{1}{x_1} = \\dfrac{x_1 - x_2}{x_1 x_2}$。\n因为 $x_1, x_2 > 0$，$x_1 - x_2 < 0$，所以 $f(x_2) - f(x_1) < 0$，即 $f(x_2) < f(x_1)$。\n所以 $f(x)$ 在 $(0, +\\infty)$ 上单调递减。", "source": "经典例题", "tags": "单调性,定义法证明", "createdAt": 1748388480004}, {"id": "q_seed_006", "topicId": "M1-C3-T3", "type": "解答题", "difficulty": "中等", "content": "判断函数 $f(x) = \\log_2(x + \\sqrt{x^2 + 1})$ 的奇偶性。", "options": "", "answer": "奇函数", "solution": "定义域为 $\\mathbb{R}$。\n$f(-x) = \\log_2(-x + \\sqrt{x^2 + 1}) = \\log_2\\left(\\dfrac{1}{x + \\sqrt{x^2 + 1}}\\right) = -\\log_2(x + \\sqrt{x^2 + 1}) = -f(x)$。\n所以 $f(x)$ 是奇函数。", "source": "经典例题", "tags": "奇偶性,对数函数,分子有理化", "createdAt": 1748388480005}, {"id": "q_seed_007", "topicId": "M1-C4-T1", "type": "单选题", "difficulty": "基础", "content": "函数 $y = a^x$（$a > 0$ 且 $a \\neq 1$）的图像必过定点（ ）", "options": "A. $(0, 0)$\nB. $(0, 1)$\nC. $(1, 0)$\nD. $(1, 1)$", "answer": "B", "solution": "当 $x = 0$ 时，$a^0 = 1$ 恒成立，所以指数函数恒过定点 $(0, 1)$，故选B。", "source": "教材改编", "tags": "指数函数,定点", "createdAt": 1748388480006}, {"id": "q_seed_008", "topicId": "M1-C4-T3", "type": "填空题", "difficulty": "中等", "content": "函数 $f(x) = \\ln x + x - 2$ 的零点所在的一个区间是\\_\\_\\_\\_\\_\\_。\n（参考数据：$\\ln 1 = 0$，$\\ln 2 \\approx 0.693$）", "options": "", "answer": "$(1, 2)$", "solution": "$f(1) = \\ln 1 + 1 - 2 = -1 < 0$，$f(2) = \\ln 2 + 2 - 2 \\approx 0.693 > 0$，\n$f(1) \\cdot f(2) < 0$，且 $f(x)$ 在 $(0, +\\infty)$ 上连续，所以零点在 $(1, 2)$ 内。", "source": "教材改编", "tags": "零点,二分法,介值定理", "createdAt": 1748388480007}, {"id": "q_seed_009", "topicId": "M1-C5-T3", "type": "填空题", "difficulty": "基础", "content": "已知 $\\sin \\alpha = \\dfrac{3}{5}$，且 $\\alpha$ 在第二象限，则 $\\cos \\alpha =$\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$-\\dfrac{4}{5}$", "solution": "由 $\\sin^2\\alpha + \\cos^2\\alpha = 1$ 得 $\\cos\\alpha = \\pm\\sqrt{1 - \\dfrac{9}{25}} = \\pm\\dfrac{4}{5}$。\n因为 $\\alpha$ 在第二象限，$\\cos\\alpha < 0$，所以 $\\cos\\alpha = -\\dfrac{4}{5}$。", "source": "经典例题", "tags": "同角三角函数,象限符号", "createdAt": 1748388480008}, {"id": "q_seed_010", "topicId": "M1-C5-T6", "type": "解答题", "difficulty": "中等", "content": "已知 $\\cos\\alpha = -\\dfrac{3}{5}$，$\\alpha \\in \\left(\\dfrac{\\pi}{2}, \\pi\\right)$，求 $\\cos\\left(\\dfrac{\\pi}{4} - \\alpha\\right)$ 的值。", "options": "", "answer": "$\\dfrac{\\sqrt{2}}{10}$", "solution": "由 $\\cos\\alpha = -\\dfrac{3}{5}$，$\\alpha \\in \\left(\\dfrac{\\pi}{2}, \\pi\\right)$，可得 $\\sin\\alpha = \\sqrt{1 - \\dfrac{9}{25}} = \\dfrac{4}{5}$。\n$\\cos\\left(\\dfrac{\\pi}{4} - \\alpha\\right) = \\cos\\dfrac{\\pi}{4}\\cos\\alpha + \\sin\\dfrac{\\pi}{4}\\sin\\alpha$\n$= \\dfrac{\\sqrt{2}}{2} \\times \\left(-\\dfrac{3}{5}\\right) + \\dfrac{\\sqrt{2}}{2} \\times \\dfrac{4}{5} = \\dfrac{\\sqrt{2}}{10}$。", "source": "经典例题", "tags": "三角恒等变换,和差角公式", "createdAt": 1748388480009}, {"id": "q_seed_011", "topicId": "M2-C1-T2", "type": "填空题", "difficulty": "中等", "content": "已知向量 $\\vec{a} = (1, 1)$，$\\vec{b} = (2, 5)$，$\\vec{c} = (3, x)$，且满足 $(8\\vec{a} - \\vec{b}) \\cdot \\vec{c} = 24$，则 $x =$\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$2$", "solution": "$8\\vec{a} - \\vec{b} = (8, 8) - (2, 5) = (6, 3)$。\n$(8\\vec{a} - \\vec{b}) \\cdot \\vec{c} = (6, 3) \\cdot (3, x) = 18 + 3x = 24$，解得 $x = 2$。", "source": "同步练习", "tags": "向量数量积,坐标运算", "createdAt": 1748388480010}, {"id": "q_seed_012", "topicId": "M2-C2-T2", "type": "填空题", "difficulty": "基础", "content": "已知复数 $z = \\dfrac{2 - i}{1 + i}$（$i$ 为虚数单位），则 $z$ 的实部为\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$\\dfrac{1}{2}$", "solution": "$z = \\dfrac{2 - i}{1 + i} \\times \\dfrac{1 - i}{1 - i} = \\dfrac{(2 - i)(1 - i)}{1 - i^2} = \\dfrac{2 - 2i - i + i^2}{2} = \\dfrac{1 - 3i}{2} = \\dfrac{1}{2} - \\dfrac{3}{2}i$，\n实部为 $\\dfrac{1}{2}$。", "source": "经典例题", "tags": "复数运算,分母实数化", "createdAt": 1748388480011}, {"id": "q_seed_013", "topicId": "M2-C3-T3", "type": "解答题", "difficulty": "中等", "content": "如图，在底面为菱形的四棱锥 $P-ABCD$ 中，$PA \\perp$ 底面 $ABCD$，$O$ 为 $AC$ 与 $BD$ 的交点，$M$ 为 $PC$ 的中点。求证：$OM \\parallel$ 平面 $PAB$。\n\n（提示：连结 $AC$ 交 $BD$ 于点 $O$，利用三角形中位线性质）", "options": "", "answer": "证明见解析", "solution": "在菱形 $ABCD$ 中，$O$ 为 $AC$ 的中点。\n$\\because M$ 为 $PC$ 的中点，$O$ 为 $AC$ 的中点，\n$\\therefore OM$ 为 $\\triangle PAC$ 的中位线，$\\therefore OM \\parallel PA$。\n$\\because PA \\subset$ 平面 $PAB$，$OM \\not\\subset$ 平面 $PAB$，\n$\\therefore OM \\parallel$ 平面 $PAB$。", "source": "经典例题", "tags": "线面平行,中位线,立体几何", "createdAt": 1748388480012}, {"id": "q_seed_014", "topicId": "M2-C3-T4", "type": "解答题", "difficulty": "中等", "content": "在三棱锥 $P-ABC$ 中，$PA \\perp$ 平面 $ABC$，$BC \\perp AC$。求证：$BC \\perp$ 平面 $PAC$。", "options": "", "answer": "证明见解析", "solution": "$\\because PA \\perp$ 平面 $ABC$，$BC \\subset$ 平面 $ABC$，$\\therefore PA \\perp BC$。\n又 $\\because BC \\perp AC$，$PA \\cap AC = A$，$PA, AC \\subset$ 平面 $PAC$，\n$\\therefore BC \\perp$ 平面 $PAC$。", "source": "教材例题改编", "tags": "线面垂直,鳖臑", "createdAt": 1748388480013}, {"id": "q_seed_015", "topicId": "M4-C1-T2", "type": "解答题", "difficulty": "中等", "content": "在等差数列 $\\{a_n\\}$ 中，已知 $a_4 = 10$，且 $a_3$，$a_6$，$a_{10}$ 成等比数列，求数列 $\\{a_n\\}$ 的前 $20$ 项和 $S_{20}$。", "options": "", "answer": "$200$ 或 $330$", "solution": "设公差为 $d$，$a_1 = a_4 - 3d = 10 - 3d$。\n由 $a_3$，$a_6$，$a_{10}$ 成等比数列得 $a_6^2 = a_3 \\cdot a_{10}$。\n$a_3 = 10 - d$，$a_6 = 10 + 2d$，$a_{10} = 10 + 6d$。\n$(10 + 2d)^2 = (10 - d)(10 + 6d)$，解得 $d = 0$ 或 $d = 1$。\n当 $d = 0$ 时，$S_{20} = 20 \\times 10 = 200$。\n当 $d = 1$ 时，$a_1 = 7$，$S_{20} = 20 \\times 7 + \\dfrac{20 \\times 19}{2} = 330$。", "source": "经典例题", "tags": "等差数列,等比中项,求和", "createdAt": 1748388480014}, {"id": "q_seed_016", "topicId": "M4-C1-T3", "type": "单选题", "difficulty": "中等", "content": "在等比数列 $\\{a_n\\}$ 中，$a_3$，$a_7$ 是方程 $x^2 - 4x + 3 = 0$ 的两根，则 $a_5$ 的值为（ ）", "options": "A. $\\sqrt{3}$\nB. $-\\sqrt{3}$\nC. $\\pm \\sqrt{3}$\nD. $\\pm 3$", "answer": "C", "solution": "由韦达定理得 $a_3 \\cdot a_7 = 3$。\n在等比数列中，$a_5^2 = a_3 \\cdot a_7 = 3$，所以 $a_5 = \\pm \\sqrt{3}$。\n注意等比数列奇数项可能同号也可能异号（当公比为负时），故选C。", "source": "经典例题", "tags": "等比数列,等比中项,韦达定理", "createdAt": 1748388480015}, {"id": "q_seed_017", "topicId": "M4-C2-T3", "type": "填空题", "difficulty": "基础", "content": "函数 $f(x) = x^3 - 3x$ 的单调递增区间为\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$(-\\infty, -1)$ 和 $(1, +\\infty)$", "solution": "$f'(x) = 3x^2 - 3 = 3(x + 1)(x - 1)$。\n令 $f'(x) > 0$ 得 $x < -1$ 或 $x > 1$。\n所以单调递增区间为 $(-\\infty, -1)$ 和 $(1, +\\infty)$。", "source": "教材改编", "tags": "导数,单调性", "createdAt": 1748388480016}, {"id": "q_seed_018", "topicId": "M4-C2-T4", "type": "填空题", "difficulty": "中等", "content": "函数 $f(x) = 12x - x^3$ 在区间 $[-3, 3]$ 上的最小值为\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$-16$", "solution": "$f'(x) = 12 - 3x^2 = -3(x + 2)(x - 2)$。\n令 $f'(x) = 0$ 得 $x = \\pm 2$。\n计算：$f(-3) = -36 + 27 = -9$，$f(-2) = -24 + 8 = -16$，$f(2) = 24 - 8 = 16$，$f(3) = 36 - 27 = 9$。\n比较得最小值为 $-16$。", "source": "高考真题改编（2010湖南卷）", "tags": "导数,最值,闭区间", "createdAt": 1748388480017}, {"id": "q_seed_019", "topicId": "M4-C2-T5", "type": "解答题", "difficulty": "困难", "content": "已知函数 $f(x) = a e^x - \\sin x$ 在 $x = 0$ 处有极值，求 $a$ 的值。", "options": "", "answer": "$a = 1$", "solution": "$f'(x) = a e^x - \\cos x$。\n由极值定义，$f'(0) = 0$，即 $a e^0 - \\cos 0 = a - 1 = 0$，解得 $a = 1$。\n当 $a = 1$ 时，$f'(x) = e^x - \\cos x$。\n当 $x < 0$ 时，$e^x < 1$，$\\cos x \\leq 1$，$f'(x) < 0$；当 $x > 0$ 时，$e^x > 1$，$\\cos x \\leq 1$，$f'(x) > 0$。\n所以 $x = 0$ 是极小值点，$a = 1$ 成立。", "source": "高考一轮复习题", "tags": "导数,极值,参数求解", "createdAt": 1748388480018}, {"id": "q_seed_020", "topicId": "M3-C3-T1", "type": "解答题", "difficulty": "困难", "content": "设椭圆 $C: \\dfrac{x^2}{a^2} + \\dfrac{y^2}{b^2} = 1\\ (a > b > 0)$ 的右焦点为 $F$，点 $M\\left(1, \\dfrac{3}{2}\\right)$ 在 $C$ 上，且 $MF \\perp x$ 轴。\n（1）求椭圆 $C$ 的方程；\n（2）过点 $P(4, 0)$ 的直线与 $C$ 相交于 $A, B$ 两点，$N$ 为线段 $FP$ 的中点，直线 $NB$ 交直线 $MF$ 于点 $Q$，证明：$AQ \\parallel y$ 轴。", "options": "", "answer": "（1）$\\dfrac{x^2}{4} + \\dfrac{y^2}{3} = 1$；（2）证明见解析", "solution": "（1）由 $MF \\perp x$ 轴得 $c = 1$，$M\\left(1, \\dfrac{3}{2}\\right)$ 在椭圆上得 $\\dfrac{1}{a^2} + \\dfrac{9}{4b^2} = 1$。\n又 $a^2 = b^2 + c^2$，联立解得 $a^2 = 4$，$b^2 = 3$。\n所以椭圆方程为 $\\dfrac{x^2}{4} + \\dfrac{y^2}{3} = 1$。\n（2）略（联立直线与椭圆方程，利用韦达定理证明 $y_A = y_Q$）。", "source": "2024全国甲卷高考真题", "tags": "椭圆,高考真题,直线与椭圆", "createdAt": 1748388480019}, {"id": "q_seed_021", "topicId": "M5-C1-T2", "type": "单选题", "difficulty": "中等", "content": "从5名男生和4名女生中选出3名代表，其中至少有一名女生，不同的选法共有（ ）", "options": "A. 80种\nB. 100种\nC. 120种\nD. 74种", "answer": "D", "solution": "方法一（直接法）：1女2男：$C_4^1 \\cdot C_5^2 = 4 \\times 10 = 40$；\n2女1男：$C_4^2 \\cdot C_5^1 = 6 \\times 5 = 30$；\n3女：$C_4^3 = 4$。\n共 $40 + 30 + 4 = 74$ 种。\n方法二（间接法）：$C_9^3 - C_5^3 = 84 - 10 = 74$。", "source": "经典例题", "tags": "排列组合,分类计数", "createdAt": 1748388480020}, {"id": "q_seed_022", "topicId": "M5-C2-T3", "type": "填空题", "difficulty": "中等", "content": "已知随机变量 $X \\sim B(n, p)$，若 $E(X) = 6$，$D(X) = 3$，则 $p =$\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$\\dfrac{1}{2}$", "solution": "由二项分布的期望和方差公式：$E(X) = np = 6$，$D(X) = np(1-p) = 3$。\n代入得 $6(1-p) = 3$，解得 $p = \\dfrac{1}{2}$，$n = 12$。", "source": "教材改编", "tags": "二项分布,期望,方差", "createdAt": 1748388480023}, {"id": "q_seed_023", "topicId": "M3-C2-T3", "type": "解答题", "difficulty": "中等", "content": "已知圆 $C$ 的圆心在直线 $y = 2x$ 上，且经过点 $A(1, 0)$ 和点 $B(3, 2)$，求圆 $C$ 的方程。", "options": "", "answer": "$(x - 2)^2 + (y - 4)^2 = 17$ 或 $(x + 2)^2 + (y + 4)^2 = 25$", "solution": "设圆心 $C(a, 2a)$，半径为 $r$，则\n$(a - 1)^2 + (2a)^2 = r^2$①，$(a - 3)^2 + (2a - 2)^2 = r^2$②。\n由①=②得 $(a-1)^2 + 4a^2 = (a-3)^2 + (2a-2)^2$，\n展开：$a^2 - 2a + 1 + 4a^2 = a^2 - 6a + 9 + 4a^2 - 8a + 4$，\n整理得 $6a = 12$，$a = 2$，圆心 $(2, 4)$，$r^2 = (2-1)^2 + 8 = 17$。\n所以圆方程为 $(x-2)^2 + (y-4)^2 = 17$。", "source": "经典例题", "tags": "圆的方程,待定系数法", "createdAt": 1748388480024}, {"id": "q_seed_024", "topicId": "M5-C1-T3", "type": "单选题", "difficulty": "基础", "content": "$(1 + x)^{10}$ 的展开式中 $x^5$ 的系数为（ ）", "options": "A. 210\nB. 252\nC. 120\nD. 45", "answer": "B", "solution": "由二项式定理，$T_{k+1} = C_{10}^k x^k$，令 $k = 5$，得 $x^5$ 系数为 $C_{10}^5 = 252$。", "source": "经典例题", "tags": "二项式定理,系数", "createdAt": 1748388480025}, {"id": "q_seed_025", "topicId": "M2-C5-T2", "type": "填空题", "difficulty": "中等", "content": "甲、乙两人独立地射击同一目标，甲击中目标的概率为 $0.8$，乙击中目标的概率为 $0.7$，则目标被击中的概率为\\_\\_\\_\\_\\_\\_。", "options": "", "answer": "$0.94$", "solution": "两事件相互独立，可以用对立事件求解。\n目标未被击中的概率为 $(1 - 0.8) \\times (1 - 0.7) = 0.2 \\times 0.3 = 0.06$。\n所以目标被击中的概率为 $1 - 0.06 = 0.94$。", "source": "经典例题", "tags": "概率,相互独立事件,对立事件", "createdAt": 1748388480026}, {"id": "q_seed_026", "topicId": "M1-C2-T1", "type": "填空题", "difficulty": "基础", "content": "比较大小：$\\sqrt{6} + \\sqrt{2}$\\_\\_\\_\\_$\\sqrt{5} + \\sqrt{3}$（填\"$>$\"或\"$<$\"）。", "options": "", "answer": "$<$", "solution": "两边同时平方：$(\\sqrt{6} + \\sqrt{2})^2 = 8 + 2\\sqrt{12} = 8 + 4\\sqrt{3}$，\n$(\\sqrt{5} + \\sqrt{3})^2 = 8 + 2\\sqrt{15}$。\n由于 $\\sqrt{3} < \\sqrt{15}$，所以 $(\\sqrt{6} + \\sqrt{2})^2 < (\\sqrt{5} + \\sqrt{3})^2$，\n故 $\\sqrt{6} + \\sqrt{2} < \\sqrt{5} + \\sqrt{3}$。", "source": "教材改编", "tags": "不等式性质,比较大小,平方比较法", "createdAt": 1748388480027}, {"id": "q_seed_027", "topicId": "M1-C5-T4", "type": "单选题", "difficulty": "中等", "content": "函数 $y = \\sin\\left(2x + \\dfrac{\\pi}{3}\\right)$ 的图像的一条对称轴方程为（ ）", "options": "A. $x = \\dfrac{\\pi}{6}$\nB. $x = \\dfrac{\\pi}{12}$\nC. $x = -\\dfrac{\\pi}{6}$\nD. $x = \\dfrac{\\pi}{3}$", "answer": "B", "solution": "正弦函数的对称轴在 $\\sin x = \\pm 1$ 处取得，即 $2x + \\dfrac{\\pi}{3} = \\dfrac{\\pi}{2} + k\\pi$，\n$2x = \\dfrac{\\pi}{6} + k\\pi$，$x = \\dfrac{\\pi}{12} + \\dfrac{k\\pi}{2}$，$k \\in \\mathbb{Z}$。\n令 $k = 0$ 得 $x = \\dfrac{\\pi}{12}$，故选B。", "source": "教材改编", "tags": "三角函数,对称轴,图像性质", "createdAt": 1748388480028}, {"id": "q_seed_028", "topicId": "M4-C1-T4", "type": "解答题", "difficulty": "困难", "content": "已知数列 $\\{a_n\\}$ 的前 $n$ 项和为 $S_n$，$a_1 = 1$，$S_{n+1} = 4a_n + 2\\ (n \\in \\mathbb{N}^*)$。\n（1）设 $b_n = a_{n+1} - 2a_n$，求证：$\\{b_n\\}$ 是等比数列；\n（2）设 $c_n = \\dfrac{a_n}{2^n}$，求证：$\\{c_n\\}$ 是等差数列。", "options": "", "answer": "证明见解析", "solution": "（1）由 $S_{n+1} = 4a_n + 2$ 得 $a_{n+2} = S_{n+2} - S_{n+1} = 4a_{n+1} - 4a_n$。\n$b_{n+1} = a_{n+2} - 2a_{n+1} = 4a_{n+1} - 4a_n - 2a_{n+1} = 2a_{n+1} - 4a_n$\n$= 2(a_{n+1} - 2a_n) = 2b_n$。\n又 $b_1 = a_2 - 2a_1$，由 $S_2 = 4a_1 + 2 = 6$ 得 $a_2 = 5$，$b_1 = 3$。\n所以 $\\{b_n\\}$ 是首项为3，公比为2的等比数列。\n（2）由（1）得 $b_n = 3 \\cdot 2^{n-1} = a_{n+1} - 2a_n$，\n两边同除以 $2^{n+1}$ 得 $\\dfrac{a_{n+1}}{2^{n+1}} - \\dfrac{a_n}{2^n} = \\dfrac{3}{4}$，\n即 $c_{n+1} - c_n = \\dfrac{3}{4}$，$c_1 = \\dfrac{1}{2}$。\n所以 $\\{c_n\\}$ 是等差数列，公差为 $\\dfrac{3}{4}$，首项为 $\\dfrac{1}{2}$。", "source": "经典例题", "tags": "数列,递推,等比数列证明,等差数列证明", "createdAt": 1748388480029}, {"id": "q_seed_029", "topicId": "M3-C3-T2", "type": "解答题", "difficulty": "困难", "content": "已知双曲线 $C$ 的中心为坐标原点，左焦点为 $(-2\\sqrt{5}, 0)$，离心率为 $\\sqrt{5}$。\n（1）求 $C$ 的方程；\n（2）记 $C$ 的左、右顶点分别为 $A_1$，$A_2$，过点 $(-4, 0)$ 的直线与 $C$ 的左支交于 $M$，$N$ 两点，$M$ 在第二象限，直线 $MA_1$ 与 $NA_2$ 交于点 $P$。证明：点 $P$ 在定直线上。", "options": "", "answer": "（1）$\\dfrac{x^2}{4} - \\dfrac{y^2}{16} = 1$；（2）点 $P$ 在定直线 $x = -1$ 上", "solution": "（1）$c = 2\\sqrt{5}$，$e = \\dfrac{c}{a} = \\sqrt{5}$，$\\therefore a = 2$，$b^2 = c^2 - a^2 = 20 - 4 = 16$。\n所以双曲线方程为 $\\dfrac{x^2}{4} - \\dfrac{y^2}{16} = 1$。\n（2）略（设直线方程，联立双曲线，用韦达定理推导点 $P$ 横坐标为定值 $-1$）。", "source": "2023新课标Ⅱ卷高考真题", "tags": "双曲线,定直线,高考真题", "createdAt": 1748388480030}, {"id": "q_seed_030", "topicId": "M2-C4-T2", "type": "解答题", "difficulty": "中等", "content": "某校从参加数学竞赛的学生中抽取了50名学生的成绩（单位：分），数据如下：\n60, 65, 68, 70, 72, 75, 76, 78, 80, 80,\n80, 82, 82, 83, 84, 85, 85, 86, 87, 88,\n88, 88, 89, 90, 90, 91, 91, 92, 92, 93,\n93, 93, 94, 94, 95, 95, 96, 96, 97, 97,\n98, 98, 98, 99, 99, 99, 100, 100, 100, 100\n（1）求这组数据的第80百分位数；\n（2）将数据分成 $[60, 70)$，$[70, 80)$，$[80, 90)$，$[90, 100]$ 四组，画出频率分布直方图。", "options": "", "answer": "（1）第80百分位数为97分", "solution": "（1）$50 \\times 80\\% = 40$，第40个和第41个数据的平均值为第80百分位数。\n第40个数为97，第41个数为97，所以第80百分位数为97分。\n（2）各组频数：$[60,70)$：3人；$[70,80)$：5人；$[80,90)$：19人；$[90,100]$：23人。\n频率/组距分别为：0.006，0.010，0.038，0.046。据此可画出直方图。\n从直方图可以看出大部分学生的成绩集中在 $[80, 100]$ 区间。", "source": "模拟题", "tags": "统计,百分位数,频率分布直方图", "createdAt": 1748388480031}];
+  
+  renderTree();
+  loadQuestions();
+  renderList();
+  bindUI();
+})();
+
+// ---- 知识点树渲染 ----
+function renderTree() {
+  const container = document.getElementById('treeContainer');
+  const tree = KNOWLEDGE_TREE;
+  let html = '';
+  tree.modules.forEach(mod => {
+    html += `<div class="tree-module" data-id="${mod.id}">
+      <div class="tree-module-header" onclick="toggleModule('${mod.id}')">
+        <span class="arrow">▶</span>
+        ${mod.name} <span class="count" style="font-weight:400;font-size:.72rem;color:#94a3b8;margin-left:auto;">(${qCount(mod.id)})</span>
+      </div>
+      <div class="tree-chapter">`;
+    mod.chapters.forEach(ch => {
+      html += `<div class="tree-chapter" data-id="${ch.id}">
+        <div class="tree-chapter-header" onclick="toggleChapter('${ch.id}')">
+          <span class="arrow">▶</span>
+          ${ch.name} <span class="count" style="font-weight:400;font-size:.72rem;color:#94a3b8;">(${qCount(ch.id)})</span>
+        </div>
+        <div class="tree-topics">`;
+      ch.topics.forEach(t => {
+        html += `<div class="tree-topic${currentTopicId === t.id ? ' active' : ''}" data-id="${t.id}" onclick="selectTopic('${t.id}')">
+          ${t.name}<span class="count">${qCount(t.id)}</span>
+        </div>`;
+      });
+      html += `</div></div>`;
+    });
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function toggleModule(id) {
+  const el = document.querySelector(`.tree-module[data-id="${id}"]`);
+  el.classList.toggle('open');
+  el.querySelector('.tree-module-header .arrow').classList.toggle('open');
+}
+
+function toggleChapter(id) {
+  const el = document.querySelector(`.tree-chapter[data-id="${id}"]`);
+  el.classList.toggle('open');
+  el.querySelector('.tree-chapter-header .arrow').classList.toggle('open');
+}
+
+function selectTopic(id) {
+  currentTopicId = id;
+  document.querySelectorAll('.tree-topic').forEach(el => el.classList.remove('active'));
+  const el = document.querySelector(`.tree-topic[data-id="${id}"]`);
+  if (el) {
+    el.classList.add('active');
+    // 展开父级
+    el.closest('.tree-chapter')?.classList.add('open');
+    el.closest('.tree-module')?.classList.add('open');
+  }
+  renderList();
+
+  // 手机端自动关闭侧栏
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+}
+
+function qCount(nodeId) {
+  return questions.filter(q => {
+    if (q.topicId === nodeId) return true;
+    // 检查是否章节id
+    for (const mod of KNOWLEDGE_TREE.modules) {
+      for (const ch of mod.chapters) {
+        if (ch.id === nodeId) return ch.topics.some(t => q.topicId === t.id);
+        if (mod.id === nodeId) return ch.topics.some(t => q.topicId === t.id);
+      }
+    }
+    return false;
+  }).length;
+}
+
+// ---- 题目数据管理 ----
+function loadQuestions() {
+  try {
+    const raw = localStorage.getItem(DB_KEY);
+    questions = raw ? JSON.parse(raw) : [];
+  } catch { questions = []; }
+}
+
+function saveQuestions() {
+  localStorage.setItem(DB_KEY, JSON.stringify(questions));
+  updateStats();
+  renderTree(); // 刷新计数
+}
+
+function updateStats() {
+  document.getElementById('totalStats').textContent = `${questions.length} 题`;
+}
+
+function getTopicName(id) {
+  for (const mod of KNOWLEDGE_TREE.modules) {
+    for (const ch of mod.chapters) {
+      for (const t of ch.topics) {
+        if (t.id === id) return `${mod.name} / ${ch.name} / ${t.name}`;
+      }
+    }
+  }
+  return id;
+}
+
+function getChapterNames(id) {
+  for (const mod of KNOWLEDGE_TREE.modules) {
+    for (const ch of mod.chapters) {
+      if (ch.id === id) return { module: mod.name, chapter: ch.name };
+      for (const t of ch.topics) {
+        if (t.id === id) return { module: mod.name, chapter: ch.name, topic: t.name };
+      }
+    }
+  }
+  return { module: '', chapter: '' };
+}
+
+// ---- 渲染题目列表 ----
+function renderList() {
+  const list = document.getElementById('questionList');
+  const resultCount = document.getElementById('resultCount');
+  const emptyState = document.getElementById('emptyState');
+
+  let filtered = [...questions];
+
+  // 知识点过滤
+  if (currentTopicId) {
+    filtered = filtered.filter(q => {
+      if (q.topicId === currentTopicId) return true;
+      // 如果是章节一级
+      for (const mod of KNOWLEDGE_TREE.modules) {
+        for (const ch of mod.chapters) {
+          if (ch.id === currentTopicId) return ch.topics.some(t => q.topicId === t.id);
+          if (mod.id === currentTopicId) return ch.topics.some(t => q.topicId === t.id);
+        }
+      }
+      return false;
+    });
+  }
+
+  // 难度过滤
+  const diffVal = document.getElementById('filterDifficulty').value;
+  if (diffVal) filtered = filtered.filter(q => q.difficulty === diffVal);
+
+  // 题型过滤
+  const typeVal = document.getElementById('filterType').value;
+  if (typeVal) filtered = filtered.filter(q => q.type === typeVal);
+
+  // 搜索
+  const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (searchVal) {
+    filtered = filtered.filter(q =>
+      q.content.toLowerCase().includes(searchVal) ||
+      (q.tags && q.tags.toLowerCase().includes(searchVal)) ||
+      (q.solution && q.solution.toLowerCase().includes(searchVal))
+    );
+  }
+
+  resultCount.textContent = `共 ${filtered.length} 题`;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3>没有找到题目</h3>
+      <p>试试其他筛选条件，或者点击右上角「加题」添加新题目</p>
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  filtered.forEach((q, idx) => {
+    const info = getChapterNames(q.topicId);
+    const diffClass = q.difficulty === '基础' ? 'q-badge-difficulty-easy' : q.difficulty === '中等' ? 'q-badge-difficulty-mid' : 'q-badge-difficulty-hard';
+    html += `<div class="q-card" onclick="showDetail('${q.id}')">
+      <div class="q-card-header">
+        <span class="q-badge q-badge-topic">${info.chapter}</span>
+        <span class="q-badge q-badge-type">${q.type}</span>
+        <span class="q-badge ${diffClass}">${q.difficulty}</span>
+      </div>
+      <div class="q-card-content">${renderMath(q.content)}</div>
+      <div class="q-card-answer" onclick="event.stopPropagation()">
+        ${showAnswerCache[q.id] ? '✅ 答案：' + renderMath(q.answer) : '<span class="hidden-answer" onclick="toggleAnswer(\'' + q.id + '\')">👁 点击显示答案</span>'}
+      </div>
+      <div class="q-card-footer">
+        <button onclick="event.stopPropagation();editQuestion('${q.id}')">✏️ 编辑</button>
+        <button class="btn-del" onclick="event.stopPropagation();deleteQuestion('${q.id}')">🗑️ 删除</button>
+      </div>
+    </div>`;
+  });
+  list.innerHTML = html;
+  renderMathInElement(list);
+}
+
+function toggleAnswer(id) {
+  showAnswerCache[id] = true;
+  renderList();
+}
+
+// ---- 详情弹窗 ----
+function showDetail(id) {
+  const q = questions.find(x => x.id === id);
+  if (!q) return;
+  const info = getChapterNames(q.topicId);
+  const diffClass = q.difficulty === '基础' ? 'q-badge-difficulty-easy' : q.difficulty === '中等' ? 'q-badge-difficulty-mid' : 'q-badge-difficulty-hard';
+  let optionsHtml = '';
+  if (q.options && !q.type.includes('填空')) {
+    const opts = q.options.split('\n').filter(Boolean);
+    const correct = q.answer.trim().toUpperCase().split(',').map(x => x.trim());
+    optionsHtml = '<ul class="detail-options">';
+    opts.forEach(o => {
+      const letter = o.charAt(0).toUpperCase();
+      const isCorrect = correct.includes(letter);
+      optionsHtml += `<li class="${isCorrect ? 'correct' : ''}">${isCorrect ? '✅ ' : ''}${o}</li>`;
+    });
+    optionsHtml += '</ul>';
+  }
+
+  const body = document.getElementById('detailContent');
+  body.innerHTML = `
+    <div class="detail-section">
+      <h4>题目信息</h4>
+      <div class="detail-body">
+        <span class="q-badge q-badge-topic">${info.module} / ${info.chapter}</span>
+        <span class="q-badge q-badge-type">${q.type}</span>
+        <span class="q-badge ${diffClass}">${q.difficulty}</span>
+        ${q.source ? `<span class="q-badge q-badge-topic" style="background:#fef3c7;color:#b45309;">📖 ${q.source}</span>` : ''}
+      </div>
+    </div>
+    <div class="detail-section">
+      <h4>题目</h4>
+      <div class="detail-body">${renderMath(q.content)}</div>
+      ${q.options && !q.type.includes('填空') ? '<h4 style="margin-top:10px;font-size:.82rem;color:var(--text-muted);font-weight:600;">选项</h4>' + optionsHtml : ''}
+    </div>
+    <div class="detail-section">
+      <h4>答案</h4>
+      <div class="detail-body" style="color:var(--success);font-weight:500;">${renderMath(q.answer)}</div>
+    </div>
+    ${q.solution ? `<div class="detail-section"><h4>解析</h4><div class="detail-body">${renderMath(q.solution)}</div></div>` : ''}
+    ${q.tags ? `<div class="detail-section"><h4>标签</h4><div class="detail-tags">${q.tags.split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('')}</div></div>` : ''}
+    <div class="detail-section" style="margin-top:4px;">
+      <div class="detail-body" style="font-size:.78rem;color:var(--text-muted);">${q.source ? '来源：' + q.source + ' · ' : ''}创建时间：${new Date(q.createdAt).toLocaleString()}</div>
+    </div>`;
+  renderMathInElement(body);
+  document.getElementById('detailModal').classList.add('open');
+}
+
+// ---- 添加/编辑题目 ----
+function populateFormTopics(selectedId) {
+  const sel = document.getElementById('formTopic');
+  sel.innerHTML = '<option value="">— 选择知识点 —</option>';
+  KNOWLEDGE_TREE.modules.forEach(mod => {
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = mod.name;
+    mod.chapters.forEach(ch => {
+      ch.topics.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = `${ch.name} / ${t.name}`;
+        if (t.id === selectedId) opt.selected = true;
+        optgroup.appendChild(opt);
+      });
+    });
+    sel.appendChild(optgroup);
+  });
+}
+
+function openAddModal() {
+  document.getElementById('modalTitle').textContent = '添加题目';
+  document.getElementById('editId').value = '';
+  document.getElementById('questionForm').reset();
+  populateFormTopics('');
+  document.getElementById('optionsGroup').style.display = 'block';
+  document.getElementById('questionModal').classList.add('open');
+}
+
+function editQuestion(id) {
+  const q = questions.find(x => x.id === id);
+  if (!q) return;
+  document.getElementById('modalTitle').textContent = '编辑题目';
+  document.getElementById('editId').value = id;
+  populateFormTopics(q.topicId);
+  document.getElementById('formType').value = q.type || '单选题';
+  document.getElementById('formDifficulty').value = q.difficulty || '中等';
+  document.getElementById('formContent').value = q.content;
+  document.getElementById('formOptions').value = q.options || '';
+  document.getElementById('formAnswer').value = q.answer;
+  document.getElementById('formSolution').value = q.solution || '';
+  document.getElementById('formSource').value = q.source || '';
+  document.getElementById('formTags').value = q.tags || '';
+  document.getElementById('optionsGroup').style.display = (q.type && (q.type.includes('单选') || q.type.includes('多选'))) ? 'block' : 'none';
+  document.getElementById('questionModal').classList.add('open');
+}
+
+// 题型切换隐藏选项
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'formType') {
+    document.getElementById('optionsGroup').style.display =
+      (e.target.value.includes('单选') || e.target.value.includes('多选')) ? 'block' : 'none';
+  }
+});
+
+document.getElementById('questionForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const editId = document.getElementById('editId').value;
+  const topicId = document.getElementById('formTopic').value;
+  if (!topicId) { alert('请选择知识点'); return; }
+
+  const data = {
+    id: editId || 'q_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+    topicId,
+    type: document.getElementById('formType').value,
+    difficulty: document.getElementById('formDifficulty').value,
+    content: document.getElementById('formContent').value.trim(),
+    options: document.getElementById('formOptions').value.trim() || '',
+    answer: document.getElementById('formAnswer').value.trim(),
+    solution: document.getElementById('formSolution').value.trim() || '',
+    source: document.getElementById('formSource').value.trim() || '',
+    tags: document.getElementById('formTags').value.trim() || '',
+    createdAt: editId ? (questions.find(x => x.id === editId)?.createdAt || Date.now()) : Date.now()
+  };
+
+  if (!data.content || !data.answer) { alert('题目内容和答案不能为空'); return; }
+
+  if (editId) {
+    const idx = questions.findIndex(x => x.id === editId);
+    if (idx >= 0) questions[idx] = data;
+  } else {
+    questions.push(data);
+  }
+
+  saveQuestions();
+  renderList();
+  document.getElementById('questionModal').classList.remove('open');
+});
+
+function deleteQuestion(id) {
+  if (!confirm('确认删除这道题吗？')) return;
+  questions = questions.filter(q => q.id !== id);
+  saveQuestions();
+  renderList();
+}
+
+// ---- LaTeX 渲染 ----
+function renderMath(text) {
+  if (!text) return '';
+  // 先转义HTML
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // 替换行内公式 $...$
+  let result = escaped.replace(/\$\$(.+?)\$\$/gs, (_, m) => {
+    try { return window.katex.renderToString(m, { displayMode: true, throwOnError: false }); }
+    catch { return `$$${m}$$`; }
+  });
+  result = result.replace(/\$(.+?)\$/g, (_, m) => {
+    try { return window.katex.renderToString(m, { displayMode: false, throwOnError: false }); }
+    catch { return `$${m}$`; }
+  });
+  return result;
+}
+
+function renderMathInElement(el) {
+  if (window.renderMathInElement) {
+    try {
+      window.renderMathInElement(el, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ]
+      });
+    } catch(e) {}
+  }
+}
+
+// ---- 导出/导入 ----
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(questions, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `math_quiz_bank_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importJSON(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!Array.isArray(data)) throw new Error('格式错误');
+      data.forEach(q => {
+        if (!q.id) q.id = 'q_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+        if (!q.createdAt) q.createdAt = Date.now();
+      });
+      questions = questions.concat(data);
+      saveQuestions();
+      renderList();
+      alert(`成功导入 ${data.length} 题`);
+    } catch(err) {
+      alert('导入失败：文件格式不正确');
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ---- 绑定 UI 事件 ----
+function bindUI() {
+  // 菜单切换
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+  // 侧栏外点击关闭
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      const sidebar = document.getElementById('sidebar');
+      const toggle = document.getElementById('menuToggle');
+      if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+      }
+    }
+  });
+
+  // 加题按钮
+  document.getElementById('addFirstBtn').addEventListener('click', openAddModal);
+
+  // 弹窗关闭
+  document.getElementById('modalClose').addEventListener('click', () => document.getElementById('questionModal').classList.remove('open'));
+  document.getElementById('modalCancel').addEventListener('click', () => document.getElementById('questionModal').classList.remove('open'));
+  document.getElementById('detailClose').addEventListener('click', () => document.getElementById('detailModal').classList.remove('open'));
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', (e) => {
+      if (e.target === m) m.classList.remove('open');
+    });
+  });
+
+  // 折叠全部
+  document.getElementById('collapseAll').addEventListener('click', () => {
+    document.querySelectorAll('.tree-module.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.tree-module-header .arrow')?.classList.remove('open');
+    });
+    document.querySelectorAll('.tree-chapter.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.tree-chapter-header .arrow')?.classList.remove('open');
+    });
+  });
+
+  // 筛选/搜索变化
+  document.getElementById('filterDifficulty').addEventListener('change', renderList);
+  document.getElementById('filterType').addEventListener('change', renderList);
+  let searchTimer;
+  document.getElementById('searchInput').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(renderList, 300);
+  });
+
+  // 快捷键
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    }
+  });
+
+  // 导出导入按钮（注入到header）
+  const headerRight = document.querySelector('.header-right');
+
+  // 种子题库按钮（内嵌数据，无需服务器）
+  const seedBtn = document.createElement('button');
+  seedBtn.className = 'btn btn-sm';
+  seedBtn.title = '一键导入30道种子题库';
+  seedBtn.textContent = '🌱 种子题库';
+  seedBtn.onclick = () => {
+    if (questions.length > 0 && !confirm('当前已有 ' + questions.length + ' 道题目，导入种子题库会追加进去，确认继续？')) return;
+    const seedData = window.SEED_QUESTIONS;
+    if (!Array.isArray(seedData) || seedData.length === 0) {
+      alert('种子数据为空');
+      return;
+    }
+    const existingIds = new Set(questions.map(q => q.id));
+    let count = 0;
+    seedData.forEach(q => {
+      if (!existingIds.has(q.id)) {
+        questions.push(q);
+        existingIds.add(q.id);
+        count++;
+      }
+    });
+    if (count > 0) {
+      saveQuestions();
+      renderList();
+      alert('✅ 成功导入 ' + count + ' 道种子题目！');
+    } else {
+      alert('所有种子题目已存在，无需重复导入。');
+    }
+  };
+  headerRight.insertBefore(seedBtn, headerRight.firstChild);
+  const exportBtn = document.createElement('button');
+  exportBtn.className = 'btn btn-sm';
+  exportBtn.title = '导出题库 JSON';
+  exportBtn.textContent = '📤 导出';
+  exportBtn.onclick = exportJSON;
+  headerRight.appendChild(exportBtn);
+
+  const importLabel = document.createElement('label');
+  importLabel.className = 'btn btn-sm';
+  importLabel.style.cursor = 'pointer';
+  importLabel.textContent = '📥 导入';
+  const importInput = document.createElement('input');
+  importInput.type = 'file';
+  importInput.accept = '.json';
+  importInput.style.display = 'none';
+  importInput.onchange = (e) => { if (e.target.files[0]) importJSON(e.target.files[0]); };
+  importLabel.appendChild(importInput);
+  headerRight.appendChild(importLabel);
+
+  updateStats();
+}
+
+  </script>
+</body>
+</html>

@@ -82,10 +82,10 @@ async function loadQuestionsFromCloud() {
           topicId: q.topicId || '',
           type: q.type || '单选题',
           difficulty: q.difficulty || '中等',
-          content: fixLatexUnderscore(compressNewlines(q.content || '')),
-          options: compressNewlines(q.options || ''),
-          answer: compressNewlines(q.answer || ''),
-          solution: fixLatexUnderscore(compressNewlines(q.solution || '')),
+          content: fixLatexUnderscore(q.content || ''),
+          options: q.options || '',
+          answer: q.answer || '',
+          solution: fixLatexUnderscore(q.solution || ''),
           source: q.source || '',
           tags: q.tags || '',
           image: q.image || '',
@@ -316,23 +316,20 @@ function getChapterNames(id) {
   const ids = (id || '').split(',').filter(Boolean);
   const chapters = [];
   const topics = [];
-  const modNames = [];
   for (const mod of KNOWLEDGE_TREE.modules) {
     for (const ch of mod.chapters) {
       if (ids.includes(ch.id)) {
         chapters.push(ch.name);
-        if (!modNames.includes(mod.name)) modNames.push(mod.name);
       }
       for (const t of ch.topics) {
         if (ids.includes(t.id)) {
           topics.push(t.name);
           if (!chapters.includes(ch.name)) chapters.push(ch.name);
-          if (!modNames.includes(mod.name)) modNames.push(mod.name);
         }
       }
     }
   }
-  return { module: modNames.join('、') || '', chapter: chapters.join('、') || '', topic: topics.join('、') };
+  return { module: '', chapter: chapters.join('、') || '', topic: topics.join('、') };
 }
 
 // ---- 渲染题目列表 ----
@@ -435,7 +432,7 @@ function renderList() {
 
     html += `<div class="q-card" onclick="showDetail('${q.id}')">
       <div class="q-card-header">
-        <span class="q-badge q-badge-topic">${info.module} ${info.chapter}</span>
+        <span class="q-badge q-badge-topic">${info.chapter}</span>
         <span class="q-badge q-badge-type">${q.type}</span>
         <span class="q-badge ${diffClass}">${q.difficulty}</span>
         ${q.source ? `<span class="q-badge q-badge-source">📖 ${q.source}</span>` : ''}
@@ -551,53 +548,9 @@ function getFilteredQuestions() {
 
 
 // ---- 详情弹窗 ----
-// ---- 压缩多余空行 ----
-function compressNewlines(str) {
-  if (!str) return '';
-  // 将连续2个及以上的换行压缩为单个换行（题库文本不应有空行分隔）
-  return str.replace(/\n{2,}/g, '\n');
-}
-
 function showDetail(id) {
-  // 从API获取完整数据（含图片字段）
-  fetch('/api/detail', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({id: id})
-  }).then(function(r){return r.json();}).then(function(res){
-    var qOrig = res.success ? res.data : null;
-    if (!qOrig) {
-      // 回退到本地数据
-      var qFallback = questions.find(function(x){return x.id == id;});
-      if (!qFallback) return;
-      renderDetailView(qFallback);
-      return;
-    }
-    var q = {
-      id: qOrig.id,
-      topicId: qOrig.topicId || '',
-      type: qOrig.type || '单选题',
-      difficulty: qOrig.difficulty || '中等',
-      content: fixLatexUnderscore(compressNewlines(qOrig.content || '')),
-      options: compressNewlines(qOrig.options || ''),
-      answer: compressNewlines(qOrig.answer || ''),
-      solution: fixLatexUnderscore(compressNewlines(qOrig.solution || '')),
-      source: qOrig.source || '',
-      tags: qOrig.tags || '',
-      image: qOrig.image || '',
-      answerImage: qOrig.answerImage || '',
-      number: (qOrig.tags || '').match(/number:(\d+)/)?.[1] || ''
-    };
-    renderDetailView(q);
-  }).catch(function(e){
-    console.error('获取详情失败，使用本地数据:', e);
-    var qFallback = questions.find(function(x){return x.id == id;});
-    if (!qFallback) return;
-    renderDetailView(qFallback);
-  });
-}
-
-function renderDetailView(q) {
+  const q = questions.find(x => x.id == id);
+  if (!q) return;
   const info = getChapterNames(q.topicId);
   const diffClass = q.difficulty === '基础' ? 'q-badge-difficulty-easy' : q.difficulty === '中等' ? 'q-badge-difficulty-mid' : 'q-badge-difficulty-hard';
   let optionsHtml = '';
@@ -617,7 +570,7 @@ function renderDetailView(q) {
     <div class="detail-section">
       <h4>题目信息</h4>
       <div class="detail-body">
-        <span class="q-badge q-badge-topic">${info.module} ${info.chapter}</span>
+        <span class="q-badge q-badge-topic">${info.module} / ${info.chapter}</span>
         <span class="q-badge q-badge-type">${q.type}</span>
         <span class="q-badge ${diffClass}">${q.difficulty}</span>
         ${q.source ? `<span class="q-badge q-badge-topic" style="background:#fef3c7;color:#b45309;">📖 ${q.source}</span>` : ''}

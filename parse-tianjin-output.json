@@ -1,0 +1,262 @@
+[
+  {
+    "number": 1,
+    "type": "选择题",
+    "content": "集合A={1,2,3,4}，B={2,3,4,5}，则A∩B=()",
+    "options": "A.{1,2,3,4} B.{2,3,4} C.{2,4} D.{1}",
+    "answer": "B",
+    "solution": "因为A={1,2,3,4}，B={2,3,4,5}，所以A∩B={2,3,4}",
+    "topicId": "M1-C1-T3",
+    "source": "2024天津卷",
+    "tags": [
+      "number:1"
+    ]
+  },
+  {
+    "number": 2,
+    "type": "选择题",
+    "content": "设a,b∈R，则\"a³=b³\"是\"3^a=3^b\"的()",
+    "options": "A.充分不必要条件 B.必要不充分条件 C.充要条件 D.既不充分也不必要条件",
+    "answer": "C",
+    "solution": "根据立方性质和指数函数性质，a³=b³和3^a=3^b都当且仅当a=b，所以二者互为充要条件.",
+    "topicId": "M1-C1-T4",
+    "source": "2024天津卷",
+    "tags": [
+      "number:2"
+    ]
+  },
+  {
+    "number": 3,
+    "type": "选择题",
+    "content": "下列图中，相关性系数最大的是()[fig1]",
+    "options": "A.图1 B.图2 C.图3 D.图4",
+    "answer": "A",
+    "solution": "A图散点分布比较集中，且大体接近某一条直线，线性回归模型拟合效果比较好，呈现明显的正相关，|r|值相比于其他3图更接近1.",
+    "topicId": "M5-C3-T1",
+    "source": "2024天津卷",
+    "tags": [
+      "number:3"
+    ]
+  },
+  {
+    "number": 4,
+    "type": "选择题",
+    "content": "下列函数是偶函数的是()",
+    "options": "A.y=(e^x-x²)/(x²+1) B.y=(cosx+x²)/(x²+1) C.y=(e^x-x)/(x+1) D.y=(sinx+4x)/e^{|x|}",
+    "answer": "B",
+    "solution": "对A，f(-1)≠f(1)；对B，g(-x)=g(x)为偶函数；对C，定义域不关于原点对称；对D，φ(1)≠φ(-1).",
+    "topicId": "M1-C3-T3",
+    "source": "2024天津卷",
+    "tags": [
+      "number:4"
+    ]
+  },
+  {
+    "number": 5,
+    "type": "选择题",
+    "content": "若a=4.2^{-0.3}，b=4.2^{0.3}，c=log_{4.2}0.2，则a,b,c的大小关系为()",
+    "options": "A.a>b>c B.b>a>c C.c>a>b D.b>c>a",
+    "answer": "B",
+    "solution": "y=4.2^x递增，-0.3<0<0.3，所以0<4.2^{-0.3}<1<4.2^{0.3}，即0<a<1<b；log_{4.2}0.2<log_{4.2}1=0，即c<0，所以b>a>c.",
+    "topicId": "M1-C4",
+    "source": "2024天津卷",
+    "tags": [
+      "number:5"
+    ]
+  },
+  {
+    "number": 6,
+    "type": "选择题",
+    "content": "若m,n为两条不同的直线，α为一个平面，则下列结论中正确的是()",
+    "options": "A.若m∥α，n⊂α，则m∥n B.若m∥α,n∥α，则m∥n C.若m∥α,n⊥α，则m⊥n D.若m∥α,n⊥α，则m与n相交",
+    "answer": "C",
+    "solution": "对A，m,n平行或异面；对B，m,n平行或异面或相交；对C，过m作平面β使得β∩α=s，m∥s，n⊥s，故m⊥n；对D，m与n相交或异面.",
+    "topicId": "M2-C3",
+    "source": "2024天津卷",
+    "tags": [
+      "number:6"
+    ]
+  },
+  {
+    "number": 7,
+    "type": "选择题",
+    "content": "已知函数f(x)=sin3(ωx+π/3)(ω>0)的最小正周期为π.则函数在[-π/12,π/6]的最小值是()",
+    "options": "A.-√3/2 B.-3/2 C.0 D.3/2",
+    "answer": "A",
+    "solution": "f(x)=sin3(ωx+π/3)=sin(3ωx+π)=-sin3ωx，由T=2π/(3ω)=π得ω=2/3，即f(x)=-sin2x，当x∈[-π/12,π/6]时，2x∈[-π/6,π/3]，f(x)在[-π/12,π/6]上递减，当x=π/6时，f(x)min=-sin(π/3)=-√3/2.",
+    "topicId": "M1-C5-T4",
+    "source": "2024天津卷",
+    "tags": [
+      "number:7"
+    ]
+  },
+  {
+    "number": 8,
+    "type": "选择题",
+    "content": "双曲线x²/a²-y²/b²=1(a>0,b>0)的左、右焦点分别为F₁,F₂.P是双曲线右支上一点，且直线PF₂的斜率为2.△PF₁F₂是面积为8的直角三角形，则双曲线的方程为()",
+    "options": "A.x²/8-y²/2=1 B.x²/8-y²/4=1 C.x²/2-y²/8=1 D.x²/4-y²/8=1",
+    "answer": "C",
+    "solution": "点P必落在第四象限，∠F₁PF₂=90°，设|PF₂|=m，由k_PF₂=tanθ₁=2求得sinθ₁=2/√5，因为∠F₁PF₂=90°，所以k_PF₁=-1/2即tanθ₂=1/2，sinθ₂=1/√5，由正弦定理：|PF₁|:|PF₂|:|F₁F₂|=sinθ₁:sinθ₂:sin90°=2:1:√5，则|PF₁|=2m,|F₁F₂|=2c=√5m，由S=1/2·m·2m=8得m=2√2，则|PF₁|=4√2,|F₁F₂|=2c=2√10,c=√10，由双曲线第一定义：|PF₁|-|PF₂|=2a=2√2,a=√2,b=√(c²-a²)=√8，所以方程为x²/2-y²/8=1.",
+    "topicId": "M3-C3-T2",
+    "source": "2024天津卷",
+    "tags": [
+      "number:8"
+    ]
+  },
+  {
+    "number": 9,
+    "type": "选择题",
+    "content": "一个五面体ABC-DEF.已知AD∥BE∥CF，且两两之间距离为1.并已知AD=1,BE=2,CF=3.则该五面体的体积为()[fig1]",
+    "options": "A.√3/6 B.3√3/4+1/2 C.√3/2 D.3√3/4-1/2",
+    "answer": "C",
+    "solution": "采用补形法，补成一个棱柱，求出其直截面，再利用体积公式即可.形成一个三棱柱，直截面为边长为1的等边三角形，侧棱长为1+3=2+2=3+1=4，V=1/2×1/2×1×1×√3/2×4=√3/2.",
+    "topicId": "M2-C3-T5",
+    "source": "2024天津卷",
+    "tags": [
+      "number:9"
+    ]
+  },
+  {
+    "number": 10,
+    "type": "填空题",
+    "content": "已知i是虚数单位，复数(√5+i)·(√5-2i)=______.",
+    "options": "",
+    "answer": "7-√5i",
+    "solution": "(√5+i)·(√5-2i)=5+√5i-2√5i+2=7-√5i.",
+    "topicId": "M2-C2-T2",
+    "source": "2024天津卷",
+    "tags": [
+      "number:10"
+    ]
+  },
+  {
+    "number": 11,
+    "type": "填空题",
+    "content": "在(3/x³+x³/3)⁶的展开式中，常数项为______.",
+    "options": "",
+    "answer": "20",
+    "solution": "通项T_{r+1}=C₆^r(3/x³)^{6-r}(x³/3)^r=3^{6-2r}C₆^r x^{6(r-3)}，令6(r-3)=0得r=3，常数项为3⁰C₆³=20.",
+    "topicId": "M5-C1-T3",
+    "source": "2024天津卷",
+    "tags": [
+      "number:11"
+    ]
+  },
+  {
+    "number": 12,
+    "type": "填空题",
+    "content": "(x-1)²+y²=25的圆心与抛物线y²=2px(p>0)的焦点F重合，A为两曲线的交点，则原点到直线AF的距离为______.",
+    "options": "",
+    "answer": "4/5",
+    "solution": "圆心为F(1,0)，故p/2=1即p=2，联立解得A(4,±4)，直线AF:y=±4/3(x-1)，原点到直线AF的距离为d=|4|/5=4/5.",
+    "topicId": "M3-C3-T3",
+    "source": "2024天津卷",
+    "tags": [
+      "number:12"
+    ]
+  },
+  {
+    "number": 13,
+    "type": "填空题",
+    "content": "A,B,C,D,E五种活动，甲、乙都要选择三个活动参加.(1)甲选到A的概率为______；已知乙选了A活动，他再选择B活动的概率为______.",
+    "options": "",
+    "answer": "①.3/5 ②.1/2",
+    "solution": "从五个活动中选三个有10种情况，甲选到A有6种，概率为6/10=3/5；乙选A后有6种可能，再选B有3种，概率为3/6=1/2.",
+    "topicId": "M5-C2-T1",
+    "source": "2024天津卷",
+    "tags": [
+      "number:13"
+    ]
+  },
+  {
+    "number": 14,
+    "type": "填空题",
+    "content": "在边长为1的正方形ABCD中，点E为线段CD的三等分点，CE=1/3CD...(图形题，涉及向量计算)[fig1]",
+    "options": "",
+    "answer": "4/3; -5/18",
+    "solution": "（PDF中提供的解析原文不完整，仅标注为图形题，涉及向量计算）",
+    "topicId": "M2-C1-T2",
+    "source": "2024天津卷",
+    "tags": [
+      "number:14"
+    ]
+  },
+  {
+    "number": 15,
+    "type": "填空题",
+    "content": "若函数f(x)=2√(x²-ax)-|ax-2|+1有唯一零点，则a的取值范围为______.",
+    "options": "",
+    "answer": "(-√3,-1)∪(1,√3)",
+    "solution": "（PDF中未提供详细解析原文）",
+    "topicId": "M1-C4-T3",
+    "source": "2024天津卷",
+    "tags": [
+      "number:15"
+    ]
+  },
+  {
+    "number": 16,
+    "type": "解答题",
+    "content": "在△ABC中，cosB=9/16，b=5，a/c=2/3.\n(1)求a；(2)求sinA；(3)求cos(2A-B).",
+    "options": "",
+    "answer": "(1)a=6 (2)sinA=√7/4 (3)cos(2A-B)=...",
+    "solution": "（PDF中未提供完整解析原文）",
+    "topicId": "M2-C1",
+    "source": "2024天津卷",
+    "tags": [
+      "number:16"
+    ]
+  },
+  {
+    "number": 17,
+    "type": "解答题",
+    "content": "已知四棱柱ABCD-A₁B₁C₁D₁中，底面ABCD是正方形，AA₁=2，AB=1，E为棱A₁A的中点...[fig1]\n(1)求证：D₁E⊥CE；(2)求平面AB₁D₁与平面CB₁D₁的夹角的正弦值.",
+    "options": "",
+    "answer": "(1)见解析 (2)1/3",
+    "solution": "（PDF中未提供完整解析原文）",
+    "topicId": "M3-C1-T5",
+    "source": "2024天津卷",
+    "tags": [
+      "number:17"
+    ]
+  },
+  {
+    "number": 18,
+    "type": "解答题",
+    "content": "已知椭圆x²/a²+y²/b²=1(a>b>0)的离心率为e=1/2，左顶点为A，短轴长为2√3，过点(0,-3/2)的动直线与椭圆交于P,Q两点.\n(1)求椭圆方程；(2)是否存在点T(0,t)(-3≤t≤3/2)，使得TP·TQ≤0恒成立.",
+    "options": "",
+    "answer": "(1)x²/12+y²/9=1 (2)...",
+    "solution": "（PDF中未提供完整解析原文）",
+    "topicId": "M3-C3-T1",
+    "source": "2024天津卷",
+    "tags": [
+      "number:18"
+    ]
+  },
+  {
+    "number": 19,
+    "type": "解答题",
+    "content": "设函数f(x)=xlnx.\n(1)求y=f(x)图像在点(1,f(1))处的切线方程；\n(2)若对任意x∈(1,+∞)，f(x)≤a(x-x²)恒成立，求a的最小值；\n(3)设函数g(x)=sinx-xcosx，对任意x₁,x₂∈(0,π/2)，当x₁<x₂时，|f(x₁)-f(x₂)|≤√(x₂-x₁)是否恒成立.",
+    "options": "",
+    "answer": "(1)y=x-1 (2)... (3)...",
+    "solution": "（PDF中未提供完整解析原文）",
+    "topicId": "M4-C2-T5",
+    "source": "2024天津卷",
+    "tags": [
+      "number:19"
+    ]
+  },
+  {
+    "number": 20,
+    "type": "解答题",
+    "content": "已知数列{a_n}是公比大于0的等比数列，其前n项和为S_n.若a₁=1，S_3=7/3.\n(1)求{a_n}的通项公式；\n(2)设b_n={S_n, n为奇数; a_n, n为偶数}，求{b_n}的前2n项和；\n(3)设c_n=(1/(S_n+1))(1/(S_{n+1}+1))，记{c_n}前n项和为T_n，求证：T_n<1/2.",
+    "options": "",
+    "answer": "(1)... (2)... (3)...",
+    "solution": "（PDF中未提供完整解析原文。OCR文本中答案部分不完整，仅剩'求证：T_n<1/2'）",
+    "topicId": "M4-C1-T4",
+    "source": "2024天津卷",
+    "tags": [
+      "number:20"
+    ]
+  }
+]

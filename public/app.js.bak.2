@@ -82,10 +82,10 @@ async function loadQuestionsFromCloud() {
           topicId: q.topicId || '',
           type: q.type || '单选题',
           difficulty: q.difficulty || '中等',
-          content: fixLatexUnderscore(compressNewlines(q.content || '')),
-          options: compressNewlines(q.options || ''),
-          answer: compressNewlines(q.answer || ''),
-          solution: fixLatexUnderscore(compressNewlines(q.solution || '')),
+          content: fixLatexUnderscore(q.content || ''),
+          options: q.options || '',
+          answer: q.answer || '',
+          solution: fixLatexUnderscore(q.solution || ''),
           source: q.source || '',
           tags: q.tags || '',
           image: q.image || '',
@@ -435,7 +435,7 @@ function renderList() {
 
     html += `<div class="q-card" onclick="showDetail('${q.id}')">
       <div class="q-card-header">
-        <span class="q-badge q-badge-topic">${info.module} ${info.chapter}</span>
+        <span class="q-badge q-badge-topic">${info.chapter}</span>
         <span class="q-badge q-badge-type">${q.type}</span>
         <span class="q-badge ${diffClass}">${q.difficulty}</span>
         ${q.source ? `<span class="q-badge q-badge-source">📖 ${q.source}</span>` : ''}
@@ -551,11 +551,11 @@ function getFilteredQuestions() {
 
 
 // ---- 详情弹窗 ----
-// ---- 压缩多余空行 ----
-function compressNewlines(str) {
+// ---- 添加中文换行（标点处断行）----
+function addChineseBreaks(str) {
   if (!str) return '';
-  // 将连续2个及以上的换行压缩为单个换行（题库文本不应有空行分隔）
-  return str.replace(/\n{2,}/g, '\n');
+  // 在中文句号、感叹号、问号、分号、冒号后加\n（除非已经存在）
+  return str.replace(/([。！？；：])\s*/g, '$1\n');
 }
 
 function showDetail(id) {
@@ -578,10 +578,10 @@ function showDetail(id) {
       topicId: qOrig.topicId || '',
       type: qOrig.type || '单选题',
       difficulty: qOrig.difficulty || '中等',
-      content: fixLatexUnderscore(compressNewlines(qOrig.content || '')),
-      options: compressNewlines(qOrig.options || ''),
-      answer: compressNewlines(qOrig.answer || ''),
-      solution: fixLatexUnderscore(compressNewlines(qOrig.solution || '')),
+      content: fixLatexUnderscore(qOrig.content || ''),
+      options: qOrig.options || '',
+      answer: qOrig.answer || '',
+      solution: fixLatexUnderscore(addChineseBreaks(qOrig.solution || '')),
       source: qOrig.source || '',
       tags: qOrig.tags || '',
       image: qOrig.image || '',
@@ -617,7 +617,7 @@ function renderDetailView(q) {
     <div class="detail-section">
       <h4>题目信息</h4>
       <div class="detail-body">
-        <span class="q-badge q-badge-topic">${info.module} ${info.chapter}</span>
+        <span class="q-badge q-badge-topic">${info.module} / ${info.chapter}</span>
         <span class="q-badge q-badge-type">${q.type}</span>
         <span class="q-badge ${diffClass}">${q.difficulty}</span>
         ${q.source ? `<span class="q-badge q-badge-topic" style="background:#fef3c7;color:#b45309;">📖 ${q.source}</span>` : ''}

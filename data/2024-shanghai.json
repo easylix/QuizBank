@@ -1,0 +1,191 @@
+[
+  {
+    "content": "设全集U={1,2,3,4,5}，集合A={2,4}，则Ā=______.",
+    "answer": "{1,3,5}",
+    "solution": "根据补集的定义可求Ā，由题设有Ā={1,3,5}.",
+    "topicId": "M1-C1-T3",
+    "tags": ["number:1"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知f(x)={√x,x>0; 1,x≤0}，则f(3)=______.",
+    "answer": "√3",
+    "solution": "因为f(x)是分段函数且3>0，故f(3)=√3.",
+    "topicId": "M1-C3-T1",
+    "tags": ["number:2"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知x∈R，则不等式x²-2x-3<0的解集为______.",
+    "answer": "{x|-1<x<3}",
+    "solution": "方程x²-2x-3=0的解为x=-1或x=3，故不等式解集为{x|-1<x<3}.",
+    "topicId": "M1-C2-T3",
+    "tags": ["number:3"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知f(x)=x³+a，x∈R，且f(x)是奇函数，则a=______.",
+    "answer": "0",
+    "solution": "奇函数性质f(-x)+f(x)=0即x³+a+(-x)³+a=0，故a=0.",
+    "topicId": "M1-C3-T3",
+    "tags": ["number:4"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知k∈R,a⃗=(2,5),b⃗=(6,k)，且a⃗∥b⃗，则k的值为______.",
+    "answer": "15",
+    "solution": "向量平行得2×k=5×6，即k=15.",
+    "topicId": "M2-C1-T3",
+    "tags": ["number:5"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "在(x²+1/x²)^5的二项展开式中，x⁴的系数为______.",
+    "answer": "10",
+    "solution": "通项T_{r+1}=C₅^r(x²)^{5-r}(1/x²)^r=C₅^r x^{10-4r}，令10-4r=4得r=1.5(舍)，令10-4r=...C₅²=10.",
+    "topicId": "M5-C1-T3",
+    "tags": ["number:6"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知α∈[π/2,π]，且cosα=-3/5，则tan(α+π/4)=______.",
+    "answer": "-1/7",
+    "solution": "cosα=-3/5，α在第二象限，sinα=4/5，tanα=sinα/cosα=-4/3，tan(α+π/4)=(tanα+1)/(1-tanα)=(-4/3+1)/(1+4/3)=(-1/3)/(7/3)=-1/7.",
+    "topicId": "M1-C5-T6",
+    "tags": ["number:7"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知三角形ABC中，BC=6，AC=8，∠A=120°，则AB边上的高为______.",
+    "answer": "24√3/7",
+    "solution": "利用余弦定理和面积公式...",
+    "topicId": "M2-C1-T4",
+    "tags": ["number:8"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知四棱锥P-ABCD底面是边长为4的正方形，侧棱长均为4，则四棱锥的高为______.",
+    "answer": "2√2",
+    "solution": "由正四棱锥性质，高PO=√(PA²-AO²)=√(16-8)=2√2.",
+    "topicId": "M2-C3-T5",
+    "tags": ["number:9"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知双曲线x²/4-y²/12=1的焦点分别为F₁,F₂，M在双曲线上，若MF₁⊥MF₂，则M到x轴的距离为______.",
+    "answer": "6√5/5",
+    "solution": "由双曲线性质，a=2,b=2√3,c=4，焦点F₁(-4,0),F₂(4,0)，设M(x₀,y₀)，由MF₁⊥MF₂得x₀²+y₀²=16，代入双曲线方程...",
+    "topicId": "M3-C3-T2",
+    "tags": ["number:10"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知A={a_i|a_i∈R,i=1,2,3}，定义d(A)=∑_{x,y∈A,x≠y}|x-y|，则...",
+    "answer": "",
+    "solution": "(OCR截断，信息不全)",
+    "topicId": "M1-C1-T3",
+    "tags": ["number:11"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "",
+    "answer": "",
+    "solution": "(OCR截断，信息不全)",
+    "topicId": "",
+    "tags": ["number:12"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知有四个物体A,B,C,D，质量分别为1,1,1,1，用等臂天平称两次，假设天平没有砝码，下列正确的是()\nA. 可以确定其中两个物体的质量\nB. 可以确定其中一个物体的质量\nC. 可以确定其中三个物体的质量\nD. 以上都不对",
+    "answer": "",
+    "solution": "",
+    "topicId": "M1-C1-T5",
+    "tags": ["number:13"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "有四个不同的盒子，有四个不同的小球，把四个小球随机分到四个盒子中，设X为空盒的个数，求E(X)=______.\nA. 3/4 B. 64/27 C. 64/81 D. 175/256",
+    "answer": "",
+    "solution": "",
+    "topicId": "M5-C2-T2",
+    "tags": ["number:14"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知f(x)定义域为R，f(x)>f(x-1)+f(x-2)，且f(1)=1,f(2)=2，求f(2024)的值()\nA. 2^{1012} B. 2^{1012}+1 C. 2^{1012}-1 D. 2^{1012}-2",
+    "answer": "",
+    "solution": "",
+    "topicId": "M4-C1-T4",
+    "tags": ["number:15"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知定义域为R的函数f(x)满足：集合M={x|f(x)=min_{y≤x}f(y)}是[-1,1]上的严格递增函数...下列正确的是()\nA. 存在f(x)是偶函数\nB. 存在f(x)在x=2处取最大值\nC. 存在f(x)是严格增函数\nD. 存在f(x)在x=-1处取到极小值",
+    "answer": "B",
+    "solution": "对于A，若存在f(x)是偶函数，取x₀=1∈[-1,1]，则对任意x∈(-∞,1),f(x)<f(1)，而f(-1)=f(1)矛盾；对于B，可构造函数f(x)={-2,x<-1; x,-1≤x≤1; 1,x>1}满足集合M=[-1,1]，当x<-1时f(x)=-2，当-1≤x≤1时f(x)∈[-1,1]，当x>1时f(x)=1，该函数最大值是f(2)；对于C，假设存在严格递增则M=R与已知M=[-1,1]矛盾；对于D，假设存在x=-1处取极小值，则在-1左侧附近存在n使得f(n)>f(-1)，与集合M定义矛盾.",
+    "topicId": "M1-C3-T2,M1-C3-T3",
+    "tags": ["number:16"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "如图为正四棱锥P-ABCD,O为底面ABCD的中心.[fig1]\n(1)若AP=5,AD=3√2，求△POA绕PO旋转一周形成的几何体的体积；\n(2)若AP=AD,E为PB的中点，求直线BD与平面AEC所成角的大小.",
+    "answer": "(1)12π (2)π/4",
+    "solution": "(1)正四棱锥PO⊥平面ABCD，由AD=3√2得AO=3，PO=√(PA²-AO²)=4，圆锥体积=1/3×π×3²×4=12π.\n(2)连接EA,EO,EC，由E是PB中点得AE⊥PB,CE⊥PB，故PB⊥平面ACE即BE⊥平面ACE，又BD∩平面ACE=O，于是所求角即为∠BOE，不妨设AP=AD=6，则BO=3√2,BE=3，sin∠BOE=3/(3√2)=√2/2，故∠BOE=π/4.",
+    "topicId": "M2-C3-T5,M3-C1-T5",
+    "tags": ["number:17"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知f(x)=ln(1-x)+(x²/2)+ax.\n(1)若y=f(x)在点(1,f(1))处的切线平行于x轴，求a的值；\n(2)若f(x)在x=0处取得极值，求a的取值范围...",
+    "answer": "",
+    "solution": "(OCR截断，信息不全)",
+    "topicId": "M4-C2-T3,M4-C2-T4",
+    "tags": ["number:18"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "某运动会要在A,B,C,D四个地区中随机选三个，且每个地区被选中的概率相等.\n(1)求选中的三个地区中含有A的概率；\n(2)在选中的三个地区中，记X为A,B,C,D中含某特定地区名的个数，求X的分布列.",
+    "answer": "(1)1/2 (2)...",
+    "solution": "(OCR截断，信息不全)",
+    "topicId": "M5-C1-T1,M5-C2-T2",
+    "tags": ["number:19"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知双曲线Γ:x²-y²=1，左右焦点分别为F₁,F₂.\n过F₂的直线l与Γ交于M,N两点,M在第四象限且△MF₁F₂的面积是△MNF₁的面积的两倍.\n(1)求弦MN所在直线的斜率k；\n(2)设k>0，求直线l的方程.",
+    "answer": "",
+    "solution": "(OCR截断，信息不全)",
+    "topicId": "M3-C3-T2",
+    "tags": ["number:20"],
+    "image": null,
+    "answerImage": null
+  },
+  {
+    "content": "已知f(x),g(x)是定义域均为R的函数，g(x)恒正且可导.定义：s(x)=|x-t+1|²+|f(x)-f(t)+g(t)|²，...",
+    "answer": "",
+    "solution": "(OCR截断，信息不全)",
+    "topicId": "M4-C2-T5",
+    "tags": ["number:21"],
+    "image": null,
+    "answerImage": null
+  }
+]

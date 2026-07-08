@@ -151,7 +151,7 @@ def parse_pdf(pdf_path):
         dj_pos = full_block.find('【点睛】')
         if dj_pos != -1:
             if solution:
-                solution += '\n\n【点睛】' + full_block[dj_pos + 4:].strip()
+                solution += '\n【点睛】' + full_block[dj_pos + 4:].strip()
             else:
                 solution = full_block[dj_pos + 4:].strip()
         
@@ -180,20 +180,29 @@ def parse_pdf(pdf_path):
             if re.match(r'^[A-F]\s*[\.\．、]', line_s):
                 opt_lines.append(line_s)
         
+        # 处理选项在一行的情况（如 A. xxx B. xxx C. xxx D. xxx）
+        if not opt_lines:
+            inline_opts = re.findall(r'[A-F]\s*[\.\．、]\s*[^A-F]+?(?=\s*[A-F]\s*[\.\．、]|$)', content_block)
+            if inline_opts and len(inline_opts) >= 3:
+                opt_lines = [o.strip() for o in inline_opts]
+        
         if opt_lines:
             options = '\n'.join(opt_lines)
             # 从题干中去掉选项行
             for ol in opt_lines:
                 content_block = content_block.replace(ol, '').replace('\n' + ol, '')
         
-        # 清理题干
+        # 清理题干（压缩多余空行，保留单换行）
         content_block = re.sub(r'\s+', ' ', content_block).strip()
         # 去掉题号前缀
         content_block = re.sub(r'^\d+\s*[\.\．、]\s*', '', content_block)
         
-        # 清理答案
+        # 清理答案（压缩多余空行）
         answer = re.sub(r'\s+', ' ', answer).strip()
         answer = answer.replace('\n', '')
+        
+        # 压缩解析中的多余空行（连续2+换行→单个换行）
+        solution = re.sub(r'\n{2,}', '\n', solution).strip()
         
         questions.append({
             'qnum': qnum,
